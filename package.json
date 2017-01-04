@@ -13,6 +13,8 @@
   "author": "Youthink <hi@hufangyun.com>",
   "license": "MIT",
   "dependencies": {
+    "config-lite": "^1.5.0",
+    "ejs": "^2.5.5",
     "express": "^4.14.0"
   },
   "devDependencies": {
