@@ -11,5 +11,6 @@ module.exports = {
 				return User
 						.findOne({ name:name })
 						.addCreateAt()
+      			.exec();
 		}
 };
