@@ -1,0 +1,10 @@
+body {
+  background-color: #DADADA;
+}
+body > .grid {
+  height: 100%;
+}
+.column {
+  margin-top: -200px;
+  max-width: 450px;
+}
