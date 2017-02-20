@@ -880,23 +880,23 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-debug@2.3.3, debug@^2.1.1, debug@^2.2.0:
+debug@2.2.0, debug@~2.2.0:
+  version "2.2.0"
+  resolved "http://r.cnpmjs.org/debug/download/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
+  dependencies:
+    ms "0.7.1"
+
+debug@2.3.3:
   version "2.3.3"
   resolved "http://r.cnpmjs.org/debug/download/debug-2.3.3.tgz#40c453e67e6e13c901ddec317af8986cda9eff8c"
   dependencies:
     ms "0.7.2"
 
-debug@2.6.1:
+debug@2.6.1, debug@^2.1.1, debug@^2.2.0:
   version "2.6.1"
   resolved "http://r.cnpmjs.org/debug/download/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
     ms "0.7.2"
-
-debug@~2.2.0:
-  version "2.2.0"
-  resolved "http://r.cnpmjs.org/debug/download/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
-  dependencies:
-    ms "0.7.1"
 
 deep-extend@~0.4.0:
   version "0.4.1"
@@ -1000,6 +1000,12 @@ event-stream@~3.3.0:
     split "0.3"
     stream-combiner "~0.0.4"
     through "~2.3.1"
+
+eventproxy@^0.3.5:
+  version "0.3.5"
+  resolved "http://r.cnpmjs.org/eventproxy/download/eventproxy-0.3.5.tgz#4db3290dcbc51cf067cbb6752e3c40b5d917212f"
+  dependencies:
+    debug "2.2.0"
 
 expand-brackets@^0.1.4:
   version "0.1.5"
