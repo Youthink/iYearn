@@ -4,8 +4,8 @@ const Schema    = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: { type: String},
-  loginname: { type: String},
-  pass: { type: String },
+  loginName: { type: String},
+  password: { type: String },
   email: { type: String},
   signature: { type: String },
   profile: { type: String },
@@ -15,7 +15,7 @@ const UserSchema = new Schema({
 
 UserSchema.plugin(BaseModel);
 
-UserSchema.index({loginname: 1}, {unique: true});
+UserSchema.index({loginName: 1}, {unique: true});
 UserSchema.index({email: 1}, {unique: true});
 UserSchema.index({accessToken: 1});
 

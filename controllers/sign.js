@@ -2,6 +2,9 @@ const validator      = require('validator');
 const eventproxy     = require('eventproxy');
 const tools          = require('../common/tools');
 const User           = require('../proxy').User;
+const config         = require('config-lite');
+const authMiddleWare = require('../middlewares/auth');
+
 
 
 
@@ -11,7 +14,7 @@ exports.showSignup = function (req, res) {
   res.render('sign/signup');
 };
 
-exports.signup = function (req, res, next){
+exports.signup = function (req, res, next) {
   const loginName      = validator.trim(req.body.loginname).toLowerCase();
   const email          = validator.trim(req.body.email).toLowerCase();
   const password       = validator.trim(req.body.password);
@@ -26,7 +29,9 @@ exports.signup = function (req, res, next){
   });
 
   // 验证信息的正确性
-  if ([loginName, password, rePassword, email].some(function (item) { return item === ''; })) {
+  if ([loginName, password, rePassword, email].some(function (item) {
+      return item === '';
+    })) {
     ep.emit('prop_err', '信息不完整。');
     return;
   }
@@ -49,11 +54,12 @@ exports.signup = function (req, res, next){
   // END 验证信息的正确性
 
 
-
-  User.getUsersByQuery({'$or': [
-    {'loginname': loginName},
-    {'email': email}
-  ]}, {}, function (err, users) {
+  User.getUsersByQuery({
+    '$or': [
+      {'loginname': loginName},
+      {'email': email}
+    ]
+  }, {}, function (err, users) {
     if (err) {
       return next(err);
     }
@@ -63,24 +69,98 @@ exports.signup = function (req, res, next){
     }
 
     tools.bhash(password, ep.done(function (passhash) {
-      User.newAndSave(loginName, loginName, passhash, email, false, function (err) {
+      console.log(passhash);
+      User.newAndSave(loginName, loginName, passhash, email, function (err) {
         if (err) {
           return next(err);
         }
         res.render('sign/signup', {
-          success: '欢迎加入 '
+          success: '欢迎加入'
         });
       });
 
     }));
   });
-
-
-
-
 };
 
-//GET login
+/**
+ * Show user login page.
+ *
+ * @param  {HttpRequest} req
+ * @param  {HttpResponse} res
+ */
+
 exports.showLogin = function (req, res) {
   res.render('sign/signin');
 };
+
+
+
+  /**
+   * define some page when login just jump to the home page
+   * @type {Array}
+   */
+  const notJump = [
+    '/signup',         //regist page
+  ];
+
+  /**
+   * Handle user login.
+   */
+  exports.login = function (req, res, next) {
+    const loginName = validator.trim(req.body.loginname).toLowerCase();
+    const password  = validator.trim(req.body.password);
+    const ep        = new eventproxy();
+
+    ep.fail(next);
+
+    if (!loginName || !password) {
+      res.status(422);
+      return res.render('sign/signin', { error: '信息不完整。' });
+    }
+
+    let getUser;
+    if (loginName.indexOf('@') !== -1) {
+      getUser = User.getUserByMail;
+    } else {
+      getUser = User.getUserByLoginName;
+    }
+
+    ep.on('login_error', function (login_error) {
+      res.status(403);
+      res.render('sign/signin', { error: '用户名或密码错误' });
+    });
+
+    getUser(loginName, function (err, user) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return ep.emit('login_error');
+      }
+      const passhash = user.password;
+      tools.bcompare(password, passhash, ep.done(function (bool) {
+        if (!bool) {
+          return ep.emit('login_error');
+        }
+        // store session cookie
+        authMiddleWare.gen_session(user, res);
+        //check at some page just jump to home page
+        let refer = req.session._loginReferer || '/';
+        for (let i = 0, len = notJump.length; i !== len; ++i) {
+          if (refer.indexOf(notJump[i]) >= 0) {
+            refer = '/';
+            break;
+          }
+        }
+        res.redirect(refer);
+      }));
+    });
+  };
+
+// sign out
+  exports.signout = function (req, res, next) {
+    req.session.destroy();
+    res.clearCookie(config.auth_cookie_name, { path: '/' });
+    res.redirect('/');
+  };

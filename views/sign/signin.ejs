@@ -16,12 +16,18 @@
         登录
       </div>
     </h2>
+    <% if(typeof(error) !== 'undefined' && error){ %>
+    <div class="alert alert-error">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <strong><%= error %></strong>
+    </div>
+    <% } %>
     <form class="ui large form" method="post">
       <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="name" placeholder="用户名">
+            <input type="text" name="loginname" placeholder="用户名">
           </div>
         </div>
         <div class="field">

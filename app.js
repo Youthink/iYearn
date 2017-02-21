@@ -14,12 +14,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // 设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
-// session 中间件
+
 
 //表单内容
 app.use(bodyParser.json({limit: '1mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
 
+// session 中间件
 app.use(session({
   name: config.session.key,// 设置 cookie 中保存 session id 的字段名称
   secret: config.session.secret,// 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改

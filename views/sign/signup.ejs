@@ -26,7 +26,7 @@
     <div class="alert alert-success">
       <strong><%= success %></strong>
     </div>
-    <% } %>
+    <% } else { %>
     <form class="ui large form" method="post" action='/signup'>
       <div class="ui stacked segment">
         <div class="field">
@@ -63,7 +63,7 @@
       </div>
       <div class="ui error message"></div>
     </form>
-
+    <% } %>
     <div class="ui message">
       已经有账户了。 <a href="/signin">登录</a>
     </div>

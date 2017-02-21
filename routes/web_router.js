@@ -5,14 +5,10 @@ const router = express.Router();
 const sign = require('../controllers/sign');
 
 
-// GET /signin 登录页
-router.get('/signin', sign.showLogin);
-
-// GET /signup 注册页
-router.get('/signup', sign.showSignup);
-
-// POST /signup 用户注册
-router.post('/signup', sign.signup);
+router.get('/signin', sign.showLogin); // 进入登录页
+router.post('/signin', sign.login); // 登录验效
+router.get('/signup', sign.showSignup); // 进入注册页
+router.post('/signup', sign.signup); // 用户注册
 
 
 module.exports = router;
