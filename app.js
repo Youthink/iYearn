@@ -7,6 +7,7 @@ const MongoStore = require('connect-mongo')(session);
 const webRouters = require('./routes/web_router');
 const config = require('config-lite');
 const pkg = require('./package');
+const auth = require('./middlewares/auth');
 
 // 设置模板目录
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //表单内容
 app.use(bodyParser.json({limit: '1mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+app.use(require('cookie-parser')(config.session.secret));
 
 // session 中间件
 app.use(session({
@@ -33,6 +35,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+// custom middleware
+app.use(auth.authUser);
 
 // routes
 app.use('/', webRouters);

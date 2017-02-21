@@ -146,10 +146,10 @@ exports.showLogin = function (req, res) {
         // store session cookie
         authMiddleWare.gen_session(user, res);
         //check at some page just jump to home page
-        let refer = req.session._loginReferer || '/';
+        let refer = req.session._loginReferer || '/user/' + loginName;
         for (let i = 0, len = notJump.length; i !== len; ++i) {
           if (refer.indexOf(notJump[i]) >= 0) {
-            refer = '/';
+            refer = '/user/' + loginName;
             break;
           }
         }
