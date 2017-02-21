@@ -1,6 +1,8 @@
 const validator      = require('validator');
 const eventproxy     = require('eventproxy');
 const tools          = require('../common/tools');
+const User           = require('../proxy').User;
+
 
 
 
@@ -45,6 +47,35 @@ exports.signup = function (req, res, next){
     return ep.emit('prop_err', '请填写邀请码。');
   }
   // END 验证信息的正确性
+
+
+
+  User.getUsersByQuery({'$or': [
+    {'loginname': loginName},
+    {'email': email}
+  ]}, {}, function (err, users) {
+    if (err) {
+      return next(err);
+    }
+    if (users.length > 0) {
+      ep.emit('prop_err', '用户名或邮箱已被使用。');
+      return;
+    }
+
+    tools.bhash(password, ep.done(function (passhash) {
+      User.newAndSave(loginName, loginName, passhash, email, false, function (err) {
+        if (err) {
+          return next(err);
+        }
+        res.render('sign/signup', {
+          success: '欢迎加入 '
+        });
+      });
+
+    }));
+  });
+
+
 
 
 };

@@ -16,6 +16,17 @@
         注册
       </div>
     </h2>
+    <% if (typeof(error) !== 'undefined' && error) { %>
+    <div class="alert alert-error">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <strong><%= error %></strong>
+    </div>
+    <% } %>
+    <% if (typeof(success) !== 'undefined' && success) { %>
+    <div class="alert alert-success">
+      <strong><%= success %></strong>
+    </div>
+    <% } %>
     <form class="ui large form" method="post" action='/signup'>
       <div class="ui stacked segment">
         <div class="field">
