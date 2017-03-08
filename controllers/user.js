@@ -31,3 +31,9 @@ exports.index = function (req, res, next) {
     render();
   });
 };
+
+exports.sleep = function (req, res, next){
+	console.log('睡觉');
+	return next();
+}
+

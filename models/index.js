@@ -13,5 +13,7 @@ mongoose.connect(config.mongodb, {
 
 // models
 require('./user');
+require('./invitationCode');
 
 exports.User    = mongoose.model('User');
+exports.InvitationCode = mongoose.model('InvitationCode');
