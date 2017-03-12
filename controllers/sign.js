@@ -2,6 +2,7 @@ const validator      = require('validator');
 const eventproxy     = require('eventproxy');
 const tools          = require('../common/tools');
 const User           = require('../proxy').User;
+const InvitationCode = require('../proxy').InvitationCode;
 const config         = require('config-lite');
 const authMiddleWare = require('../middlewares/auth');
 
@@ -56,30 +57,52 @@ exports.signup = function (req, res, next) {
 
   User.getUsersByQuery({
     '$or': [
-      {'loginname': loginName},
+      {'loginName': loginName},
       {'email': email}
     ]
   }, {}, function (err, users) {
     if (err) {
       return next(err);
     }
+
     if (users.length > 0) {
       ep.emit('prop_err', '用户名或邮箱已被使用。');
       return;
     }
 
-    tools.bhash(password, ep.done(function (passhash) {
+    InvitationCode.hasInvitationCode(invitationCode, function(err, code){
+      if (err) {
+        return next(err);
+      }
+
+      if (!code) {
+        ep.emit('prop_err', '邀请码已被使用或不不存在');
+         return;
+       }
+      
+      tools.bhash(password, ep.done(function (passhash) {
       console.log(passhash);
       User.newAndSave(loginName, loginName, passhash, email, function (err) {
         if (err) {
           return next(err);
         }
+
+        InvitationCode.updateInvitationCodeToUsed(invitationCode, loginName, function(err){
+          if (err) {
+            return next(err);
+          }
+        });
+
         res.render('sign/signup', {
           success: '欢迎加入'
         });
       });
 
     }));
+
+    })
+    
+    
   });
 };
 

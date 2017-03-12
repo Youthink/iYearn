@@ -9,7 +9,6 @@ const UserSchema = new Schema({
   email: { type: String},
   signature: { type: String },
   profile: { type: String },
-
   accessToken: {type: String},
 });
 
