@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>iYearn</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.js"></script>
+</head>
+<body>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+            <div class="content">
+                早起排名
+            </div>
+        </h2>
+        <table>
+            <th>
+                <td>排名</td>
+                <td>用户名</td>
+                <td>起床时间</td>
+                <td>计划</td>
+            </th>
+            <% rank.forEach(function(user, index){ %>
+            <tr>
+                <td><%= index %></td>
+                <td><%= user.loginName %></td>
+                <td><%= user.wakeUpTime %></td>
+                <td>已填写</td>
+            </tr>
+            <% }) %>
+        </table>
+    </div>
+</div>
+</body>
+</html>

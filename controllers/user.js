@@ -1,7 +1,7 @@
 const User         = require('../proxy').User;
+const EveryDay     = require('../proxy').EveryDay;
 const util         = require('util');
-
-
+const { todayDate, todayDateTime}  = require('../common/myMoment');
 
 exports.index = function (req, res, next) {
   const userName = req.params.name;
@@ -21,10 +21,18 @@ exports.index = function (req, res, next) {
         }
         return user.url;
       })();
+      const TodayDate = todayDate();
+      let wakeUped = false;
+      EveryDay.getUserTodayWakeUpTime(user.loginName, TodayDate, function(err, everyDay){
+        if(everyDay){
+          wakeUped = true;
+        }
 
-      res.render('user/index', {
-        user: user,
-        pageTitle: util.format('@%s 的个人主页', user.loginName),
+        res.render('user/index', {
+          user: user,
+          wakeUped,
+          pageTitle: util.format('@%s 的个人主页', user.loginName),
+        });
       });
     };
 
@@ -32,8 +40,31 @@ exports.index = function (req, res, next) {
   });
 };
 
+
 exports.sleep = function (req, res, next){
-	console.log('睡觉');
-	return next();
-}
+  const currentUser = req.session.user;
+  console.log(currentUser + '睡觉');
+  return next();
+};
+
+exports.wakeUp = function (req, res, next){
+  const currentUser = req.session.user.name;
+  const TodayDate = todayDate();
+  const wakeUpTime = todayDateTime();
+
+  EveryDay.newAndSave(currentUser, TodayDate, wakeUpTime, function (err) {
+    if (err) {
+      return next(err);
+    }
+  });
+
+  res.redirect('/wake-up-rank');
+};
+
+exports.wakeUpRank = function (req, res) {
+  const TodayDate = todayDate();
+  EveryDay.getRankByTodayDate(TodayDate, function(err,rank){
+    res.render('wake-up-rank', {rank});
+  });
+};
 

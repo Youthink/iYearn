@@ -25,9 +25,13 @@
         <input type="submit" value="退出">
       </form>
     </div>
+      <% if (!wakeUped) { %>
 		<form action="/user/<%= user.loginName %>/wake-up" method="post">
 		  <button>早起签到</button>
 		</form>
+      <% } else{ %>
+        <button>已签到</button>
+      <% } %>
     <% } %>
   </div>
 </div>
