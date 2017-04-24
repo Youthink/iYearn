@@ -7,24 +7,128 @@
   <link rel="stylesheet" href="/styles/style.css">
   <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.js"></script>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    li{
+      list-style: none;
+    }
+    body{
+      background: #f7f8fa;
+    }
+    main{
+      padding-top: 40px;
+      width: 1000px;
+      margin: 0 auto;
+    }
+    .face{
+      width: 200px;
+    }
+    .face img{
+      border-radius: 5px;
+      width: 100%;
+    }
+    .left{
+      width: 30%;
+      float: left;
+    }
+    .right{
+      width: 70%;
+      float: left;
+    }
+
+    .name{
+      font-size: 27px;
+      font-weight: bold;
+      text-align: center;
+      margin: 8px;
+    }
+    .side-left{
+      font-size: 18px;
+      color: #666666;
+      margin-top: 60px;
+    }
+    .side-left li{
+      margin: 15px 5px;
+    }
+    .nav nav{
+      width: 1000px;
+      margin: 0 auto;
+    }
+    .nav{
+      width:100%;
+      height:50px;
+      background: #ffffff;
+      color: #8590a6;
+    }
+    .nav li{
+      float: left;
+      margin: 10px 30px;
+      font-size: 16px;
+      line-height: 28px;
+    }
+    .sigout input{
+      float: right;
+      padding: 8px 15px;
+      margin-top:10px;
+      background: #0d79d1;
+      border:none;
+      border-radius: 5px;
+      color: #ffffff;
+    }
+    .item-title{
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
+  <div class="nav">
+    <nav>
+      <ul>
+        <li>首页</li>
+        <li>群组</li>
+      </ul>
+      <div class="sigout">
+          <% if (current_user) { %>
+        <form action="/signout" method="post">
+          <input type="submit" value="退出">
+        </form>
+          <% } %>
+      </div>
+    </nav>
+  </div>
+  <main>
+    <div class="left">
+      <div class="face">
+        <img src="https://sfault-avatar.b0.upaiyun.com/365/521/3655215859-572184c6803e9_huge256">
+        <div class="name">
+          <%= user.loginName %>
+        </div>
+      </div>
+      <div class="side-left">
+        <ul>
+          <li>五年计划</li>
+          <li>我的书单</li>
+          <li>我的计划</li>
+          <li>我的每天</li>
+          <li>我的每周</li>
+          <li>我的每月</li>
+          <li>我的每年</li>
+        </ul>
+      </div>
+    </div>
+    <div class="right">
+      <div class="item">
+        <p class="item-title">我的作息</p>
+        <img src="http://ww2.sinaimg.cn/large/006tNbRwly1fey8y69uraj30km04rjrn.jpg">
+      </div>
+    </div>
+  </main>
 <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui teal image header">
-      <div class="content">
-        个人主页
-      </div>
-    </h2>
-    <p>
-      <%= user.loginName %>
-    </p>
     <% if (current_user) { %>
-    <div class="panel">
-      <form action="/signout" method="post">
-        <input type="submit" value="退出">
-      </form>
-    </div>
       <% if (!wakeUped) { %>
 		<form action="/user/<%= user.loginName %>/wake-up" method="post">
 		  <button>早起签到</button>
@@ -33,12 +137,6 @@
         <button>已签到</button>
       <% } %>
     <% } %>
-    <p>
-      我的职业、正在学习、参加的计划、擅长、我今年的计划
-      明天先开始搞基本的UI
-    </p>
-    <p>我的作息</p>
-    <p>可切换的标签页</p>
     <ul>
       <li>1、绿色的打卡记录 </li>
       <li>2、作息折线图</li>
