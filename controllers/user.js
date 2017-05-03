@@ -68,3 +68,45 @@ exports.wakeUpRank = function (req, res) {
   });
 };
 
+exports.addHabit = function (req, res, next){
+  const currentUser = req.session.user.name;
+  const TodayDate = todayDate();
+  const wakeUpTime = todayDateTime();
+
+  EveryDay.newAndSave(currentUser, TodayDate, wakeUpTime, function (err) {
+    if (err) {
+      return next(err);
+    }
+  });
+
+  res.redirect('/wake-up-rank');
+};
+
+exports.deleteHabit = function (req, res) {
+  const TodayDate = todayDate();
+  EveryDay.getRankByTodayDate(TodayDate, function(err,rank){
+    res.render('wake-up-rank', {rank});
+  });
+};
+
+exports.completeHabit = function (req, res, next) {
+  const currentUser = req.session.user.name;
+  const TodayDate = todayDate();
+  const wakeUpTime = todayDateTime();
+
+  EveryDay.newAndSave(currentUser, TodayDate, wakeUpTime, function (err) {
+    if (err) {
+      return next(err);
+    }
+  });
+
+  res.redirect('/wake-up-rank');
+};
+
+exports.cancelHabit = function (req, res) {
+  const TodayDate = todayDate();
+  EveryDay.getRankByTodayDate(TodayDate, function(err,rank){
+    res.render('wake-up-rank', {rank});
+  });
+};
+

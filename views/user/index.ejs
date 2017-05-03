@@ -78,8 +78,44 @@
       border-radius: 5px;
       color: #ffffff;
     }
+    .item{
+      margin-bottom: 20px;
+    }
     .item-title{
       font-size: 18px;
+    }
+    .item .sign-in button{
+      padding: 8px 15px;
+      margin-top:10px;
+      background: #0d79d1;
+      border:none;
+      border-radius: 5px;
+      color: #ffffff;
+    }
+    .sign-in {
+      margin: 0 auto 20px;
+    }
+    .habit-list li {
+      margin: 10px 10px 10px 0px;
+      font-size: 15px;
+      color: #8590a6;
+    }
+    .complete-habit {
+      padding: 3px 9px;
+      font-size: 8px;
+      margin-top: 10px;
+      background: #0d79d1;
+      border: none;
+      border-radius: 5px;
+      color: #ffffff;
+    }
+    .add-habit {
+      padding: 8px 15px;
+      margin-top:10px;
+      background: #0d79d1;
+      border:none;
+      border-radius: 5px;
+      color: #ffffff;
     }
   </style>
 </head>
@@ -122,27 +158,32 @@
     <div class="right">
       <div class="item">
         <p class="item-title">我的作息</p>
+          <div class="sign-in">
+              <% if (current_user) { %>
+              <% if (!wakeUped) { %>
+            <form action="/user/<%= user.loginName %>/wake-up" method="post">
+              <button>早起签到</button>
+            </form>
+              <% } else{ %>
+            <button>已签到</button>
+              <% } %>
+              <% } %>
+          </div>
         <img src="http://ww2.sinaimg.cn/large/006tNbRwly1fey8y69uraj30km04rjrn.jpg">
+      </div>
+      <div class="item">
+        <p class="item-title">我的习惯</p>
+        <ul class="habit-list">
+          <li>
+            合理作息，早睡早起
+            <button class="complete-habit">&radic;</button>
+          </li>
+          <li>每天八杯水</li>
+          <li>每天泡脚</li>
+        </ul>
+        <button class="add-habit">添加习惯</button>
       </div>
     </div>
   </main>
-<div class="ui middle aligned center aligned grid">
-  <div class="column">
-    <% if (current_user) { %>
-      <% if (!wakeUped) { %>
-		<form action="/user/<%= user.loginName %>/wake-up" method="post">
-		  <button>早起签到</button>
-		</form>
-      <% } else{ %>
-        <button>已签到</button>
-      <% } %>
-    <% } %>
-    <ul>
-      <li>1、绿色的打卡记录 </li>
-      <li>2、作息折线图</li>
-      <li>3、合理作息率</li>
-    </ul>
-  </div>
-</div>
 </body>
 </html>
