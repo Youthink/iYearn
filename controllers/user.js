@@ -3,6 +3,7 @@ const EveryDay     = require('../proxy').EveryDay;
 const util         = require('util');
 const { todayDate, todayDateTime}  = require('../common/myMoment');
 
+//用户主页
 exports.index = function (req, res, next) {
   const userName = req.params.name;
   User.getUserByLoginName(userName, function (err, user) {
@@ -10,7 +11,7 @@ exports.index = function (req, res, next) {
       return next(err);
     }
     if (!user) {
-      res.render404('这个用户不存在。');
+      //res.render404('这个用户不存在。');
       return;
     }
 
@@ -31,7 +32,7 @@ exports.index = function (req, res, next) {
         res.render('user/index', {
           user: user,
           wakeUped,
-          pageTitle: util.format('@%s 的个人主页', user.loginName),
+          pageTitle: util.format('@%s 的个人主页', user.name),
         });
       });
     };
@@ -40,6 +41,20 @@ exports.index = function (req, res, next) {
   });
 };
 
+//用户个人设置
+
+exports.showSettings = function (req, res, next){
+  User.getUserById(req.session.user._id, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (req.query.save === 'success') {
+      user.success = '保存成功。';
+    }
+    user.error = null;
+    return res.render('user/settings', user);
+  });
+};
 
 exports.sleep = function (req, res, next){
   const currentUser = req.session.user;
