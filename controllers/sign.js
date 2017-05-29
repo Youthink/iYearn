@@ -81,8 +81,14 @@ exports.signup = function (req, res, next) {
        }
       
       tools.bhash(password, ep.done(function (passhash) {
-      console.log(passhash);
-      User.newAndSave(loginName, loginName, passhash, email, function (err) {
+        const userObj = {
+          nickName     : loginName,
+          loginName    : loginName,
+          password     : passhash,
+          email        : email
+        };
+
+        User.newAndSave(userObj, function (err) {
         if (err) {
           return next(err);
         }
@@ -98,7 +104,7 @@ exports.signup = function (req, res, next) {
         });
       });
 
-    }));
+      }));
 
     })
     
@@ -118,72 +124,71 @@ exports.showLogin = function (req, res) {
 };
 
 
+/**
+ * define some page when login just jump to the home page
+ * @type {Array}
+ */
+const notJump = [
+  '/signup',         //regist page
+];
 
-  /**
-   * define some page when login just jump to the home page
-   * @type {Array}
-   */
-  const notJump = [
-    '/signup',         //regist page
-  ];
+/**
+ * Handle user login.
+ */
+exports.login = function (req, res, next) {
+  const loginName = validator.trim(req.body.loginname).toLowerCase();
+  const password  = validator.trim(req.body.password);
+  const ep        = new eventproxy();
 
-  /**
-   * Handle user login.
-   */
-  exports.login = function (req, res, next) {
-    const loginName = validator.trim(req.body.loginname).toLowerCase();
-    const password  = validator.trim(req.body.password);
-    const ep        = new eventproxy();
+  ep.fail(next);
 
-    ep.fail(next);
+  if (!loginName || !password) {
+    res.status(422);
+    return res.render('sign/signin', { error: '信息不完整。' });
+  }
 
-    if (!loginName || !password) {
-      res.status(422);
-      return res.render('sign/signin', { error: '信息不完整。' });
+  let getUser;
+  if (loginName.indexOf('@') !== -1) {
+    getUser = User.getUserByMail;
+  } else {
+    getUser = User.getUserByLoginName;
+  }
+
+  ep.on('login_error', function (login_error) {
+    res.status(403);
+    res.render('sign/signin', { error: '用户名或密码错误' });
+  });
+
+  getUser(loginName, function (err, user) {
+    if (err) {
+      return next(err);
     }
-
-    let getUser;
-    if (loginName.indexOf('@') !== -1) {
-      getUser = User.getUserByMail;
-    } else {
-      getUser = User.getUserByLoginName;
+    if (!user) {
+      return ep.emit('login_error');
     }
-
-    ep.on('login_error', function (login_error) {
-      res.status(403);
-      res.render('sign/signin', { error: '用户名或密码错误' });
-    });
-
-    getUser(loginName, function (err, user) {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
+    const passhash = user.password;
+    tools.bcompare(password, passhash, ep.done(function (bool) {
+      if (!bool) {
         return ep.emit('login_error');
       }
-      const passhash = user.password;
-      tools.bcompare(password, passhash, ep.done(function (bool) {
-        if (!bool) {
-          return ep.emit('login_error');
+      // store session cookie
+      authMiddleWare.gen_session(user, res);
+      //check at some page just jump to home page
+      let refer = req.session._loginReferer || '/user/' + loginName;
+      for (let i = 0, len = notJump.length; i !== len; ++i) {
+        if (refer.indexOf(notJump[i]) >= 0) {
+          refer = '/user/' + loginName;
+          break;
         }
-        // store session cookie
-        authMiddleWare.gen_session(user, res);
-        //check at some page just jump to home page
-        let refer = req.session._loginReferer || '/user/' + loginName;
-        for (let i = 0, len = notJump.length; i !== len; ++i) {
-          if (refer.indexOf(notJump[i]) >= 0) {
-            refer = '/user/' + loginName;
-            break;
-          }
-        }
-        res.redirect(refer);
-      }));
-    });
-  };
+      }
+      res.redirect(refer);
+    }));
+  });
+};
 
 // sign out
-  exports.signout = function (req, res, next) {
-    req.session.destroy();
-    res.clearCookie(config.auth_cookie_name, { path: '/' });
-    res.redirect('/signin');
-  };
+exports.signout = function (req, res, next) {
+  req.session.destroy();
+  res.clearCookie(config.auth_cookie_name, { path: '/' });
+  res.redirect('/signin');
+};

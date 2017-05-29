@@ -16,7 +16,6 @@ exports.userRequired = function (req, res, next) {
   next();
 };
 
-
 function gen_session(user, res) {
   const auth_token = user._id + '$$$$'; // 以后可能会存储更多信息，用 $$$$ 来分隔
   const opts = {
@@ -26,6 +25,8 @@ function gen_session(user, res) {
     httpOnly: true
   };
   res.cookie(config.auth_cookie_name, auth_token, opts); //cookie 有效期30天
+
+  return res._headers['set-cookie'];
 }
 
 exports.gen_session = gen_session;
@@ -48,6 +49,7 @@ exports.authUser = function (req, res, next) {
   }
 
   ep.all('get_user', function (user) {
+
     if (!user) {
       return next();
     }

@@ -5,6 +5,7 @@ const { todayDate, todayDateTime}  = require('../common/myMoment');
 
 //用户主页
 exports.index = function (req, res, next) {
+
   const userName = req.params.name;
   User.getUserByLoginName(userName, function (err, user) {
     if (err) {
@@ -52,7 +53,7 @@ exports.showSettings = function (req, res, next){
       user.success = '保存成功。';
     }
     user.error = null;
-    return res.render('user/settings', user);
+    return res.render('user/settings', {user: user});
   });
 };
 

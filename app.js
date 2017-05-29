@@ -8,6 +8,7 @@ const webRouters = require('./routes/web_router');
 const config = require('config-lite');
 const pkg = require('./package');
 const auth = require('./middlewares/auth');
+const apiRouterV1 = require('./routes/api_router');
 
 // 设置模板目录
 app.set('views', path.join(__dirname, 'views'));
@@ -42,6 +43,7 @@ app.use(session({
 app.use(auth.authUser);
 
 // routes
+app.use('/api/v1',apiRouterV1);
 app.use('/', webRouters);
 
 app.listen(config.port, function(){

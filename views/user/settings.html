@@ -1,115 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>iYearn</title>
-  <link rel="stylesheet" href="//cdn.bootcss.com/semantic-ui/2.2.10/semantic.min.css">
-  <link rel="stylesheet" href="/styles/style.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/semantic-ui/2.2.10/semantic.min.js"></script>
-  <style>
-    body{
-      background: #f7f8fa;
-    }
-    .global-nav .container .item{
-      color: #8590a6;
-      padding: 1.2em 1.14285714em;
-    }
-    .global-nav .container .item .sign-out{
-      border:none;
-      background-color: inherit;
-    }
-    .face{
-      width: 200px;
-    }
-    .face img{
-      border-radius: 5px;
-      width: 100%;
-    }
-    .name{
-      font-size: 27px;
-      font-weight: bold;
-      text-align: center;
-      margin: 8px;
-    }
-    .side-left{
-      font-size: 18px;
-      color: #666666;
-      margin-top: 60px;
-    }
-    .side-left li{
-      margin: 15px 5px;
-    }
-    .nav nav{
-      width: 1000px;
-      margin: 0 auto;
-    }
-    .nav{
-      width:100%;
-      height:50px;
-      background: #ffffff;
-      color: #8590a6;
-    }
-    .nav li{
-      float: left;
-      margin: 10px 30px;
-      font-size: 16px;
-      line-height: 28px;
-    }
-    .sigout input{
-      float: right;
-      padding: 8px 15px;
-      margin-top:10px;
-      background: #0d79d1;
-      border:none;
-      border-radius: 5px;
-      color: #ffffff;
-    }
-    .item-title{
-      font-size: 18px;
-    }
-    .item .sign-in button{
-      padding: 8px 15px;
-      margin-top:10px;
-      background: #0d79d1;
-      border:none;
-      border-radius: 5px;
-      color: #ffffff;
-    }
-    .sign-in {
-      margin: 0 auto 20px;
-    }
-    .habit-list li {
-      margin: 10px 10px 10px 0px;
-      font-size: 15px;
-      color: #8590a6;
-    }
-    .complete-habit {
-      padding: 3px 9px;
-      font-size: 8px;
-      margin-top: 10px;
-      background: #0d79d1;
-      border: none;
-      border-radius: 5px;
-      color: #ffffff;
-    }
-    .add-habit {
-      padding: 8px 15px;
-      margin-top:10px;
-      background: #0d79d1;
-      border:none;
-      border-radius: 5px;
-      color: #ffffff;
-    }
+<%- partial('includes/global-nav') %>
 
-    .user-info{
+<div class="ui container">
+  <div class="user-settings">
+    <h4 class="ui header">基本资料</h4>
+    <div class="ui form">
+      <div class="inline field">
+        <label>昵称</label>
+        <input type="text" placeholder="昵称">
+      </div>
+      <div class="inline field">
+        <label>性别</label>
+        <select class="ui dropdown">
+          <option value="1">男</option>
+          <option value="0">女</option>
+        </select>
+      </div>
+      <div class="inline field">
+        <label>坐标</label>
+        <input type="text" placeholder="现居城市">
+      </div>
+      <div class="field">
+        <label>个人简介</label>
+        <textarea rows="2"></textarea>
+      </div>
+      <div class="ui primary button">保存</div>
+    </div>
+    <div class="ui divider"></div>
+    <h4 class="ui header">修改头像</h4>
+    <div class="inline field">
+      <label for="file" class="ui icon button">
+        <i class="file icon"></i>
+        上传图片</label>
+      <input type="file" id="file" style="display:none">
+      <div class="ui primary button">保存</div>
+    </div>
+</span>
+    <div class="ui divider"></div>
+    <h4 class="ui header">修改密码</h4>
+    <div class="ui form">
+      <div class="inline field">
+        <label>原密码</label>
+        <input type="text" placeholder="原密码">
+      </div>
+      <div class="inline field">
+        <label>新密码</label>
+        <input type="text" placeholder="新密码">
+      </div>
+      <div class="ui primary button">保存</div>
+    </div>
+    <div class="ui divider"></div>
+  </div>
+</div>
 
-    }
-  </style>
-</head>
-<body>
-  <main>
-    用户设置页
-  </main>
-</body>
-</html>
