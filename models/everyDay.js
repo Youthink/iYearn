@@ -1,9 +1,10 @@
 const mongoose  = require('mongoose');
 const BaseModel = require("./base_model");
 const Schema    = mongoose.Schema;
+const ObjectId  = Schema.ObjectId;
 
 const EveryDaySchema = new Schema({
-  loginName  : { type: String },
+  userId     : { type: ObjectId },
   TodayDate  : { type: String },
   wakeUpTime : { type: String },
   sleepTime  : { type: String }

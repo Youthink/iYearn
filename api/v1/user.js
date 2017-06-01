@@ -2,7 +2,6 @@
  * Created by DuSong on 2017/4/21.
  */
 
-
 const _            = require('lodash');
 const eventproxy   = require('eventproxy');
 const User         = require('../../proxy').User;
@@ -32,7 +31,7 @@ let login = function (req, res, next) {
       js_code: code
     }
   }, (err, response, data) => {
-    if (response.statusCode === 200) {
+    if ( data&&data.openid ) {
 
       const openid = data.openid;
       // const session_key = data.session_key;
