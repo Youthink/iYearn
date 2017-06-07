@@ -59,20 +59,28 @@
         </div>
         <div class="item">
           <p class="item-title">今日成就</p>
-          <form class="ui form" action="/every-day/add-summary" method="post">
-            <textarea name="diary-summary"cols="80" rows="10"></textarea>
+          <% if(!showSummaryTextarea){ %>
+          <form class="ui form" action="/every-day/add-summary" method="post" id="add-summary">
+            <textarea name="diarySummary"cols="80" rows="10"><%= todaySummary %></textarea>
             <button class="ui primary add-diary-summary button">添加总结</button>
           </form>
+          <% } else{ %>
+          <pre><%= todaySummary %></pre>
+          <form class="ui form" action="/user/<%= user.loginName %>">
+            <input type="hidden" name="editTodaySummary" value="true">
+            <button class="ui primary add-diary button">编辑总结</button>
+          </form>
+          <% }%>
         </div>
       </div>
       <div class="ui bottom attached tab segment" data-tab="second">
         <div class="item">
           <div class="past-day" style="text-align: center; width:600px;">
             <p>选择日期查看以往的每日计划和成就</p>
-            <form action="/user/<%= user.loginName %>/wake-up" method="post">
+            <form action="/every-day/search">
               <div class="ui input">
-                <input class="sleep-time" type="text" placeholder="2016-12-3">
-                <button class="ui primary sign-in-btn button">选择</button>
+                <input class="sleep-time" type="search" placeholder="20170607">
+                <button class="ui primary sign-in-btn button">搜索</button>
               </div>
             </form>
           </div>
@@ -103,8 +111,16 @@
   ;
 
   $('#add-diary').submit(function(){
-    var diary= $("[name='diary']").val();
+    const diary= $("[name='diary']").val();
     if($.trim(diary)==""){
+      alert("还没有填写内容哪！");
+      return false;
+    }
+  });
+
+  $('#add-summary').submit(function(){
+    const diarySummary = $("[name='diarySummary']").val();
+    if($.trim(diarySummary)==""){
       alert("还没有填写内容哪！");
       return false;
     }

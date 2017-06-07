@@ -62,6 +62,9 @@ body{
 .right-box .today .item{
   margin: 20px auto;
 }
+.right-box .segment{
+  min-width: 700px;
+}
 .item .sign-in .sign-in-btn{
   margin-left: 20px;
 }

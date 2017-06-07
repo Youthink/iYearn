@@ -31,7 +31,13 @@ exports.wakeUp = function(req, res, next){
   const TodayDate = todayDate();
   const wakeUpTime = todayDateTime();
 
-  EveryDay.newAndSave(currentUser._id, TodayDate, wakeUpTime, function (err) {
+  const day ={
+    userId: currentUser._id,
+    TodayDate: TodayDate,
+    wakeUpTime: wakeUpTime
+  };
+
+  EveryDay.newAndSave(day, function (err) {
     if (err) {
       return next(err);
     }
@@ -45,7 +51,13 @@ exports.wakeUp = function(req, res, next){
   const TodayDate = todayDate();
   const wakeUpTime = todayDateTime();
 
-  EveryDay.newAndSave(currentUser._id, TodayDate, wakeUpTime, function (err) {
+  const day ={
+    userId: currentUser._id,
+    TodayDate: TodayDate,
+    wakeUpTime: wakeUpTime
+  };
+
+  EveryDay.newAndSave(day, function (err) {
     if (err) {
       return next(err);
     }

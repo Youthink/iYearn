@@ -8,6 +8,7 @@ exports.index = function (req, res, next) {
 
   const userName = req.params.name;
   const editTodayPlan = req.query.editTodayPlan;
+  const editTodaySummary = req.query.editTodaySummary;
   User.getUserByLoginName(userName, function (err, user) {
     if (err) {
       return next(err);
@@ -27,7 +28,9 @@ exports.index = function (req, res, next) {
       const TodayDate = todayDate();
       let wakeUped = false;
       let todayPlan = '';
+      let todaySummary = '';
       let showPlanTextarea = false;
+      let showSummaryTextarea = false;
       EveryDay.getUserToday(user._id, TodayDate, function(err, Today){
         if(Today&&Today.wakeUpTime){
           wakeUped = true;
@@ -40,8 +43,19 @@ exports.index = function (req, res, next) {
         if(editTodayPlan){
           showPlanTextarea = false;
         }
+
+        if(Today&&Today.diarySummary){
+          todaySummary = Today.diarySummary;
+          showSummaryTextarea = true;
+        }
+        if(editTodaySummary){
+          showSummaryTextarea = false;
+        }
+
         res.render('user/index', {
           todayPlan,
+          todaySummary,
+          showSummaryTextarea,
           showPlanTextarea,
           user: user,
           wakeUped,

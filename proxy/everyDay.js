@@ -14,12 +14,23 @@ exports.getUserToday = function (userId, TodayDate, callback) {
 };
 
 //更新每日计划
-exports.updateTodayDiary = function (userId, TodayDate, diary, callback) {
-  EveryDay.findOne({userId: userId, TodayDate: TodayDate}, function(err, today){
+exports.updateTodayDiary = function (day, callback) {
+  EveryDay.findOne({userId: day.userId, TodayDate: day.TodayDate}, function(err, today){
     if (err || !today) {
       return callback(err);
     }
-    today.diary = diary;
+    today.diary = day.diary;
+    today.save(callback);
+  });
+};
+
+//更新每日总结
+exports.updateTodayDiarySummary = function (day, callback) {
+  EveryDay.findOne({userId: day.userId, TodayDate: day.TodayDate}, function(err, today){
+    if (err || !today) {
+      return callback(err);
+    }
+    today.diarySummary = day.diarySummary;
     today.save(callback);
   });
 };
@@ -63,12 +74,13 @@ exports.getRankByTodayDate = function (TodayDate, callback) {
   });
 };
 
-exports.newAndSave = function (userId, TodayDate, wakeUpTime, diary, callback) {
+exports.newAndSave = function (day, callback) {
   const everyDay       = new EveryDay();
-  everyDay.userId      = userId;
-  everyDay.TodayDate   = TodayDate;
-  everyDay.wakeUpTime  = wakeUpTime;
-  everyDay.diary       = diary;
+  everyDay.userId      = day.userId;
+  everyDay.TodayDate   = day.TodayDate;
+  everyDay.wakeUpTime  = day.wakeUpTime;
+  everyDay.diary       = day.diary;
+  everyDay.diarySummary  = day.diarySummary;
 
   everyDay.save(callback);
 };

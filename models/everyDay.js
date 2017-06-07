@@ -4,11 +4,12 @@ const Schema    = mongoose.Schema;
 const ObjectId  = Schema.ObjectId;
 
 const EveryDaySchema = new Schema({
-  userId     : { type: ObjectId },
-  TodayDate  : { type: String },
-  wakeUpTime : { type: String },
-  sleepTime  : { type: String },
-  diary      : { type: String }
+  userId        : { type: ObjectId },
+  TodayDate     : { type: String },
+  wakeUpTime    : { type: String },
+  sleepTime     : { type: String },
+  diary         : { type: String },
+  diarySummary  : { type: String }
 });
 
 EveryDaySchema.plugin(BaseModel);
