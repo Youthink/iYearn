@@ -59,36 +59,119 @@ body{
 .item-title{
   font-size: 18px;
 }
-.item .sign-in button{
-  padding: 8px 15px;
-  margin-top:10px;
-  background: #0d79d1;
-  border:none;
-  border-radius: 5px;
+.right-box .today .item{
+  margin: 20px auto;
+}
+.item .sign-in .sign-in-btn{
+  margin-left: 20px;
+}
+.item .add-diary,.item .add-diary-summary{
+  margin-top: 20px;
+}
+.item .notice{
   color: #ffffff;
+  border-radius: 50%;
+  padding:3px 5px;
+  font-size:11px;
+  background-color: red;
 }
 .sign-in {
   margin: 0 auto 20px;
 }
-.habit-list li {
-  margin: 10px 10px 10px 0px;
-  font-size: 15px;
+
+.page{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.user-page .left-box{
+  float: left;
+  margin-right: 60px;
+}
+
+.user-page .right-box{
+  float: left;
+  padding-top:30px;
+}
+
+/***********成员页***********/
+.all-user-page .search-input{
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+.all-user-page .search-input input{
+  border:none;
+  padding:15px 10px;
+  border-radius: 5px;
+  font-size:18px;
+  color: #49525c;
+  width:650px;
+
+}
+
+.all-user-page .search-input input:focus{
+  outline: none;
+}
+
+.all-user-page .search-input i.icon{
+  position: relative;
+  left: -37px;
+  font-size: 20px;
+  line-height: 2.5;
   color: #8590a6;
 }
-.complete-habit {
-  padding: 3px 9px;
-  font-size: 8px;
+.all-user-page .search-result{
+  width:650px;
+  margin: 40px auto 20px;
+}
+.all-user-page .search-result .item{
+  background: #ffffff;
+  padding:10px;
+  width:200px;
+  overflow: auto;
+}
+.all-user-page .search-result .face{
+  width:50px;
   margin-top: 10px;
-  background: #0d79d1;
-  border: none;
-  border-radius: 5px;
-  color: #ffffff;
+  border-radius: 50%;
+  float:left;
 }
-.add-habit {
-  padding: 8px 15px;
-  margin-top:10px;
-  background: #0d79d1;
-  border:none;
-  border-radius: 5px;
-  color: #ffffff;
+
+.all-user-page .search-result .info{
+  float:left;
 }
+
+.all-user-page .search-result .info .name{
+  font-size:16px;
+}
+
+.all-user-page .search-result .info .follow{
+  margin-left: 10px;
+}
+
+.all-user-page .search-result .info .follow .mini-btn{
+  font-size: 10px;
+  padding:6px 15px;
+}
+
+/*****登录注册页面*****/
+
+.sign-in-page{
+  display: flex;
+  justify-content: center;
+}
+
+.sign-in-page .column{
+  margin-top: 100px;
+  width:400px;
+}
+
+.sign-in-page .header{
+  display: flex;
+  justify-content: center;
+  color:#0d79d1;
+  margin-bottom: 40px;
+}
+
+

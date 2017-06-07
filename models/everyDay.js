@@ -7,7 +7,8 @@ const EveryDaySchema = new Schema({
   userId     : { type: ObjectId },
   TodayDate  : { type: String },
   wakeUpTime : { type: String },
-  sleepTime  : { type: String }
+  sleepTime  : { type: String },
+  diary      : { type: String }
 });
 
 EveryDaySchema.plugin(BaseModel);

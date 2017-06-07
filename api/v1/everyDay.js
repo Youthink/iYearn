@@ -8,8 +8,8 @@ exports.checkWakeUp = function(req, res, next){
   const currentUser = req.session.user;
   const TodayDate = todayDate();
 
-  EveryDay.getUserTodayWakeUpTime(currentUser._id, TodayDate, function(err, everyDay){
-    if(!everyDay){
+  EveryDay.getUserToday(currentUser._id, TodayDate, function(err, everyDay){
+    if(!(everyDay && everyDay.wakeUpTime)){
       return res.json({
         success:true,
         wakeUp:false

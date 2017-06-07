@@ -1,12 +1,12 @@
-<div class="ui middle aligned center aligned grid">
+<div class="sign-in-page">
   <div class="column">
-    <h2 class="ui teal image header">
+    <h2 class="ui image header">
       <div class="content">
         注册
       </div>
     </h2>
     <% if (typeof(error) !== 'undefined' && error) { %>
-    <div class="alert alert-error">
+    <div class="ui warning message">
       <a class="close" data-dismiss="alert" href="#">&times;</a>
       <strong><%= error %></strong>
     </div>
@@ -45,16 +45,16 @@
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input type="text" name="invitation_code" placeholder="邀请码">
+            <input type="text" name="invitation_code" placeholder="邀请码 （发送邮件到 123@123.com 申请）">
           </div>
         </div>
-        <button class="ui fluid large teal submit button">注册</button>
+        <button class="ui fluid large primary submit button">注册</button>
       </div>
       <div class="ui error message"></div>
     </form>
     <% } %>
     <div class="ui message">
-      已经有账户了。 <a href="/signin">登录</a>
+      已经有账户了。 <a href="/signin">登录</a> 或者 <a href="/alluser">随便看看</a>
     </div>
   </div>
 </div>

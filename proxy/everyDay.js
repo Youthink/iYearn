@@ -3,16 +3,27 @@ const EveryDay    =  models.EveryDay;
 const User        = require('./user');
 const eventproxy  = require('eventproxy');
 
+//根据今天的日期，查询数据库每日记录
 
-//根据今天的日期，查询是否有早签到记录
-
-exports.getUserTodayWakeUpTime = function (userId, TodayDate, callback) {
+exports.getUserToday = function (userId, TodayDate, callback) {
   if (!userId) {
     return callback();
   }
 
   EveryDay.findOne({userId: userId, TodayDate: TodayDate}, callback);
 };
+
+//更新每日计划
+exports.updateTodayDiary = function (userId, TodayDate, diary, callback) {
+  EveryDay.findOne({userId: userId, TodayDate: TodayDate}, function(err, today){
+    if (err || !today) {
+      return callback(err);
+    }
+    today.diary = diary;
+    today.save(callback);
+  });
+};
+
 
 //根据今天的日期，查询所有有早起记录的用户
 
@@ -52,11 +63,12 @@ exports.getRankByTodayDate = function (TodayDate, callback) {
   });
 };
 
-exports.newAndSave = function (userId, TodayDate, wakeUpTime, callback) {
+exports.newAndSave = function (userId, TodayDate, wakeUpTime, diary, callback) {
   const everyDay       = new EveryDay();
   everyDay.userId      = userId;
   everyDay.TodayDate   = TodayDate;
   everyDay.wakeUpTime  = wakeUpTime;
+  everyDay.diary       = diary;
 
   everyDay.save(callback);
 };

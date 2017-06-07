@@ -7,6 +7,7 @@ const { todayDate, todayDateTime}  = require('../common/myMoment');
 exports.index = function (req, res, next) {
 
   const userName = req.params.name;
+  const editTodayPlan = req.query.editTodayPlan;
   User.getUserByLoginName(userName, function (err, user) {
     if (err) {
       return next(err);
@@ -25,12 +26,23 @@ exports.index = function (req, res, next) {
       })();
       const TodayDate = todayDate();
       let wakeUped = false;
-      EveryDay.getUserTodayWakeUpTime(user.loginName, TodayDate, function(err, everyDay){
-        if(everyDay){
+      let todayPlan = '';
+      let showPlanTextarea = false;
+      EveryDay.getUserToday(user._id, TodayDate, function(err, Today){
+        if(Today&&Today.wakeUpTime){
           wakeUped = true;
         }
 
+        if(Today&&Today.diary){
+          todayPlan = Today.diary;
+          showPlanTextarea = true;
+        }
+        if(editTodayPlan){
+          showPlanTextarea = false;
+        }
         res.render('user/index', {
+          todayPlan,
+          showPlanTextarea,
           user: user,
           wakeUped,
           pageTitle: util.format('@%s 的个人主页', user.name),
@@ -124,5 +136,10 @@ exports.cancelHabit = function (req, res) {
   EveryDay.getRankByTodayDate(TodayDate, function(err,rank){
     res.render('wake-up-rank', {rank});
   });
+};
+
+exports.allUser = function (req, res, next){
+    const user = req.session.user || null;
+    return res.render('user/alluser', {user: user});
 };
 

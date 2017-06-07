@@ -1,15 +1,25 @@
 <div class="global-nav ui huge menu borderless">
     <div class="ui  container">
-        <a class="item">
+        <% if (current_user) { %>
+        <a class="item" href="/user/<%= user.loginName %>">
             首页
         </a>
-        <a class="item">
-            群组
+        <% } else {%>
+        <a class="item" href="/signin">
+            首页
         </a>
-        <% if (current_user) { %>
+        <% }%>
+        <a class="item" href="/alluser">
+            成员
+        </a>
         <div class="right menu">
+            <a class="item">
+                消息
+                <span class="notice">1</span>
+            </a>
+            <% if (current_user) { %>
             <div class="ui simple dropdown item">
-                <%= user.name %>
+                <%= user.nickName %>
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a href="/user/<%= user.loginName %>" class="item">我的主页</a>
@@ -21,13 +31,11 @@
                     </a>
                 </div>
             </div>
-        </div>
-        <% } else {%>
-        <div class="right menu">
+            <% } else {%>
             <div class="item">
                 <a href="/signin" class="ui primary button">登录</a>
             </div>
+            <% }%>
         </div>
-        <% }%>
     </div>
 </div>

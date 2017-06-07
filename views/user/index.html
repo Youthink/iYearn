@@ -1,18 +1,15 @@
 <%- partial('includes/global-nav') %>
 
-<main>
-    <div class="left">
+<main class="page user-page">
+    <div class="left-box">
       <div class="face">
         <img src="https://sfault-avatar.b0.upaiyun.com/365/521/3655215859-572184c6803e9_huge256">
         <div class="name">
-          <%= user.name %>
+          <%= user.nickName %>
         </div>
       </div>
       <div class="side-left">
         <ul>
-          <li>五年计划</li>
-          <li>我的书单</li>
-          <li>我的计划</li>
           <li>我的每天</li>
           <li>我的每周</li>
           <li>我的每月</li>
@@ -20,34 +17,97 @@
         </ul>
       </div>
     </div>
-    <div class="right">
-      <div class="item">
-        <p class="item-title">我的作息</p>
-          <div class="sign-in">
-              <% if (current_user) { %>
-              <% if (!wakeUped) { %>
-            <form action="/user/<%= user.loginName %>/wake-up" method="post">
-              <button>早起签到</button>
-            </form>
-              <% } else{ %>
-            <button>已签到</button>
-              <% } %>
-              <% } %>
-          </div>
-        <img src="http://ww2.sinaimg.cn/large/006tNbRwly1fey8y69uraj30km04rjrn.jpg">
+    <div class="right-box">
+      <div class="ui top attached tabular menu">
+        <a class="item active" data-tab="first">今日</a>
+        <a class="item" data-tab="second">以往</a>
       </div>
-      <div class="item">
-        <p class="item-title">我的习惯</p>
-        <ul class="habit-list">
-          <li>
-            合理作息，早睡早起
-            <button class="complete-habit">&radic;</button>
-          </li>
-          <li>每天八杯水</li>
-          <li>每天泡脚</li>
-        </ul>
-        <button class="add-habit">添加习惯</button>
+      <div class="ui bottom attached active tab segment today" data-tab="first">
+        <!--<div class="item">
+          <p class="item-title">今日作息</p>
+          <div class="sign-in">
+            <p>填写昨晚的休息时间，为您统计作息</p>
+            <% if (current_user) { %>
+            <% if (!wakeUped) { %>
+            <form action="/user/<%= user.loginName %>/wake-up" method="post">
+              <div class="ui input">
+                <input class="sleep-time" type="time">
+                <button class="ui primary sign-in-btn button">早起签到</button>
+              </div>
+            </form>
+            <% } else{ %>
+            <button>已签到</button>
+            <% } %>
+            <% } %>
+          </div>
+          <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fgao54lq26j30km049dfx.jpg">
+        </div>-->
+        <div class="item">
+          <p class="item-title">今日计划</p>
+          <% if(!showPlanTextarea){ %>
+          <form class="ui form" action="/every-day/add-diary" method="post" id="add-diary">
+            <textarea name="diary"cols="80" rows="10"><%= todayPlan %></textarea>
+            <button class="ui primary add-diary button">添加计划</button>
+          </form>
+          <% } else{ %>
+            <pre><%= todayPlan %></pre>
+            <form class="ui form" action="/user/<%= user.loginName %>">
+              <input type="hidden" name="editTodayPlan" value="true">
+              <button class="ui primary add-diary button">编辑计划</button>
+            </form>
+          <% }%>
+        </div>
+        <div class="item">
+          <p class="item-title">今日成就</p>
+          <form class="ui form" action="/every-day/add-summary" method="post">
+            <textarea name="diary-summary"cols="80" rows="10"></textarea>
+            <button class="ui primary add-diary-summary button">添加总结</button>
+          </form>
+        </div>
+      </div>
+      <div class="ui bottom attached tab segment" data-tab="second">
+        <div class="item">
+          <div class="past-day" style="text-align: center; width:600px;">
+            <p>选择日期查看以往的每日计划和成就</p>
+            <form action="/user/<%= user.loginName %>/wake-up" method="post">
+              <div class="ui input">
+                <input class="sleep-time" type="text" placeholder="2016-12-3">
+                <button class="ui primary sign-in-btn button">选择</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="item">
+          <p class="item-title">当日计划</p>
+          <p>1、早上早起学习mongoDB</p>
+          <p>2、学习英语</p>
+          <p>3、下午提交代码</p>
+          <p>4、Github每日提交</p>
+          <p>5、每天的八杯水</p>
+          <p>6、锻炼身体</p>
+        </div>
+        <div class="item" style="margin-top:20px;">
+          <p class="item-title">当日成就</p>
+          <p>1、每天的八杯水 完成</p>
+          <p>2、Github每日提交 完成</p>
+          <p>3、学习mongoDB</p>
+          <p>4、学习JavaScript</p>
+          <p>5、学习React</p>
+        </div>
       </div>
     </div>
   </main>
+<script>
+  $('.menu .item')
+    .tab()
+  ;
+
+  $('#add-diary').submit(function(){
+    var diary= $("[name='diary']").val();
+    if($.trim(diary)==""){
+      alert("还没有填写内容哪！");
+      return false;
+    }
+  });
+</script>
 

@@ -16,7 +16,8 @@ exports.showSignup = function (req, res) {
 };
 
 exports.signup = function (req, res, next) {
-  const loginName      = validator.trim(req.body.loginname).toLowerCase();
+  const nickName       = validator.trim(req.body.loginname);
+  const loginName      = nickName.toLowerCase();
   const email          = validator.trim(req.body.email).toLowerCase();
   const password       = validator.trim(req.body.password);
   const rePassword     = validator.trim(req.body.re_password);
@@ -76,13 +77,13 @@ exports.signup = function (req, res, next) {
       }
 
       if (!code) {
-        ep.emit('prop_err', '邀请码已被使用或不不存在');
+        ep.emit('prop_err', '邀请码已被使用或不存在');
          return;
        }
       
       tools.bhash(password, ep.done(function (passhash) {
         const userObj = {
-          nickName     : loginName,
+          nickName     : nickName,
           loginName    : loginName,
           password     : passhash,
           email        : email
@@ -187,7 +188,7 @@ exports.login = function (req, res, next) {
 };
 
 // sign out
-exports.signout = function (req, res, next) {
+exports.signout = function (req, res) {
   req.session.destroy();
   res.clearCookie(config.auth_cookie_name, { path: '/' });
   res.redirect('/signin');
