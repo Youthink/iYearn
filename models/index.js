@@ -15,7 +15,11 @@ mongoose.connect(config.mongodb, {
 require('./user');
 require('./invitationCode');
 require('./everyDay');
+require('./follows');
+require('./message');
 
 exports.User    = mongoose.model('User');
 exports.InvitationCode = mongoose.model('InvitationCode');
 exports.EveryDay = mongoose.model('EveryDay');
+exports.Follows = mongoose.model('Follows');
+exports.Message = mongoose.model('Message');

@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, './public/images/avatar')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname + Date.parse(new Date()));
+    cb(null, Date.parse(new Date()) + file.originalname);
   }
 });
 const upload = multer({ storage: storage });

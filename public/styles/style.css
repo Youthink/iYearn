@@ -32,6 +32,9 @@ body{
   margin: 15px 5px;
   list-style: none;
 }
+.side-left ul{
+  padding:0;
+}
 .nav nav{
   width: 1000px;
   margin: 0 auto;
@@ -91,6 +94,7 @@ body{
 .user-page .left-box{
   float: left;
   margin-right: 60px;
+  text-align: center;
 }
 
 .user-page .left-box .follow-box{
@@ -103,6 +107,10 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.user-page .left-box .follow{
+  margin-top: 10px;
 }
 
 .user-page .left-box .follow-box .item{

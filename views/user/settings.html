@@ -2,12 +2,18 @@
 
 <div class="ui container">
   <div class="user-settings">
+    <% if(typeof(error) !== 'undefined' && error){ %>
+    <div class="ui warning message">
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <strong><%= error %></strong>
+    </div>
+    <% } %>
     <h4 class="ui header">基本资料</h4>
     <div class="ui form">
-      <form class="inline field">
+      <form class="inline field" method='post' action='/settings/base' id="edit-nickName">
         <label>昵称</label>
         <input type="text" name="nickName" placeholder="昵称">
-        <div class="ui primary button">保存</div>
+        <button type="submit" class="ui primary button">保存</button>
       </form>
       <!--<div class="field">-->
         <!--<label>个人简介</label>-->
@@ -17,7 +23,7 @@
     <div class="ui divider"></div>
     <h4 class="ui header">修改头像</h4>
     <div class="inline field">
-      <form class="upload-avatar" method='post' action='/settings/avatar' enctype='multipart/form-data' >
+      <form class="upload-avatar" method='post' action='/settings/avatar' enctype='multipart/form-data' id="upload-avatar">
         <label for="file" class="ui icon button">
           <i class="file icon"></i>
           上传图片</label>
@@ -30,43 +36,79 @@
     </div>
     <div class="ui divider"></div>
     <h4 class="ui header">修改密码</h4>
-    <div class="ui form">
+    <form class="ui form" action="/settings" method="post" id="update-pwd">
       <div class="inline field">
         <label>原密码</label>
-        <input type="text" placeholder="原密码">
+        <input type="password" name="oldPwd" placeholder="原密码">
       </div>
       <div class="inline field">
         <label>新密码</label>
-        <input type="text" placeholder="新密码">
+        <input type="password" name="newPwd" placeholder="新密码">
       </div>
-      <div class="ui primary button">保存</div>
-    </div>
+      <button type="submit" class="ui primary button">保存</button>
+    </form>
     <div class="ui divider"></div>
-    <h4 class="ui header">权限管理</h4>
-    <div class="ui form">
-      <div class="grouped fields">
-        <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="example2" checked="checked">
-            <label>仅自己可见</label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="example2">
-            <label>所有人可见</label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui radio checkbox">
-            <input type="radio" name="example2">
-            <label>我关注的好友可见</label>
-          </div>
-        </div>
-      </div>
-      <div class="ui primary button">保存</div>
-    </div>
-    <div class="ui divider"></div>
+    <!--<h4 class="ui header">权限管理</h4>-->
+    <!--<div class="ui form">-->
+      <!--<div class="grouped fields">-->
+        <!--<div class="field">-->
+          <!--<div class="ui radio checkbox">-->
+            <!--<input type="radio" name="example2" checked="checked">-->
+            <!--<label>仅自己可见</label>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="field">-->
+          <!--<div class="ui radio checkbox">-->
+            <!--<input type="radio" name="example2">-->
+            <!--<label>所有人可见</label>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="field">-->
+          <!--<div class="ui radio checkbox">-->
+            <!--<input type="radio" name="example2">-->
+            <!--<label>我关注的好友可见</label>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="ui primary button">保存</div>-->
+    <!--</div>-->
+    <!--<div class="ui divider"></div>-->
   </div>
 </div>
+
+<script>
+  $('#upload-avatar').submit(function(){
+    const avatar= $("[name='avatar']").val();
+    if($.trim(avatar)==""){
+      alert("先上传图片");
+      return false;
+    }
+  });
+
+  $('#edit-nickName').submit(function(){
+    const nickName= $("[name='nickName']").val();
+    if($.trim(nickName)==""){
+      alert("请先填写昵称");
+      return false;
+    }
+  });
+
+  $('#update-pwd').submit(function(){
+    const oldPwd= $("[name='oldPwd']").val();
+    const newPwd= $("[name='newPwd']").val();
+    if($.trim(oldPwd)=="" || $.trim(newPwd)=="" ){
+      alert("表单不能为空");
+      return false;
+    }
+  });
+
+  $('.message .close')
+    .on('click', function() {
+      $(this)
+        .closest('.message')
+        .transition('fade')
+      ;
+    })
+  ;
+</script>
 

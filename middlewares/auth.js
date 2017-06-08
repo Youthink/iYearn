@@ -3,6 +3,7 @@ const UserModel  = mongoose.model('User');
 const config     = require('config-lite');
 const eventproxy = require('eventproxy');
 const UserProxy  = require('../proxy').User;
+const Message    = require('../proxy').Message;
 
 
 /**
@@ -57,7 +58,10 @@ exports.authUser = function (req, res, next) {
     if (config.admins.hasOwnProperty(user.loginName)) {
       user.is_admin = true;
     }
-    return next();
+    Message.getMessagesCount(user._id, ep.done(function (count) {
+      user.messages_count = count;
+      next();
+    }));
   });
 
   if (req.session.user) {

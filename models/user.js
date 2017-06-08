@@ -15,6 +15,8 @@ const UserSchema = new Schema({
   signature: { type: String },
   profile: { type: String },
   accessToken: { type: String },
+  following_count:{type:Number,default:0},
+  followed_count:{type:Number,default:0},
   signUpTime : { type: Date }
 });
 

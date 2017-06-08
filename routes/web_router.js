@@ -14,11 +14,19 @@ router.get('/signup', sign.showSignup);    // 进入注册页
 router.post('/signup', sign.signup);       // 用户注册
 router.post('/signout', sign.signout);     // 用户登出
 
-router.get('/settings', auth.userRequired, user.showSettings); // 用户个人设置
+router.get('/settings', auth.userRequired, user.showSettings); // 用户个人设置页面
 router.post('/settings/avatar', auth.userRequired, user.settingAvatar);//设置个人头像
+router.post('/settings/base', auth.userRequired, user.settingBase);//设置个人信息
+router.post('/settings', auth.userRequired, user.updatePwd);//更新密码
 router.get('/user/:name', user.index);     // 用户个人主页
-router.post('/user/:name/sleep', user.sleep); // 晚上睡前签到
 router.post('/user/:name/wake-up', user.wakeUp); // 起床签到
+
+
+router.post('/alluser', user.search); // 搜索用户
+router.post('/follow', auth.userRequired, user.follow); // 关注好友
+router.post('/unfollow', auth.userRequired, user.unfollow); // 取消关注
+
+router.get('/message', auth.userRequired, user.message); // 我的消息
 
 router.post('/every-day/add-diary', everyDay.addDiary); // 添加今日计划
 router.post('/every-day/add-summary', everyDay.addSummary); // 添加今日成就

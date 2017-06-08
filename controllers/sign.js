@@ -23,7 +23,7 @@ exports.signup = function (req, res, next) {
   const rePassword     = validator.trim(req.body.re_password);
   const invitationCode = validator.trim(req.body.invitation_code);
 
-  const ep = new eventproxy();  //这一段不是很明白，待定
+  const ep = new eventproxy();
   ep.fail(next);
   ep.on('prop_err', function (msg) {
     res.status(422);

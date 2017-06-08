@@ -11,13 +11,23 @@
       <div class="follow-box">
         <div class="item">
           <span class="font">关注者</span>
-          <span class="count">16人</span>
+          <span class="count"><%= user.followed_count %>人</span>
         </div>
         <div class="item">
           <span class="font">关注了</span>
-          <span class="count">16人</span>
+          <span class="count"><%= user.following_count %>人</span>
         </div>
       </div>
+      <% if(current_user.loginName != user.loginName){ %>
+      <div class="follow">
+        <button type="submit"
+                class="add-friend mini-btn ui <%= isFollow ? 'default' : 'primary' %> button"
+                action="<%= isFollow ? '/unfollow' : '/follow' %>"
+        >
+          <%= isFollow ? '已关注':'关注' %>
+        </button>
+      </div>
+      <% } %>
       <div class="side-left">
         <ul>
           <li><a href="/every-day/past">我的每天</a></li>
@@ -147,5 +157,19 @@
       return false;
     }
   });
+
+  $('.add-friend')
+    .on('click', function() {
+      const action = $(this).attr('action');
+      $.ajax({
+        method:'POST',
+        url:action,
+        data:{
+          friendId: '<%= user._id %>'
+        }
+      });
+      location.reload();
+    })
+  ;
 </script>
 

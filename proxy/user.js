@@ -121,6 +121,56 @@ exports.updateAvatar = function (userId, avator, callback) {
   });
 };
 
+//更新用户信息
+exports.updateUserInfo = function (userInfo, callback) {
+  User.findOne({_id: userInfo.userId}, function (err, user) {
+    if(!user){
+      return err;
+    }
+    user.nickName = userInfo.nickName;
+    user.save(callback);
+  });
+};
+
+//更新用户密码
+exports.updateUserPwd = function (userInfo, callback) {
+  User.findOne({_id: userInfo.userId}, function (err, user) {
+    if(!user){
+      return err;
+    }
+    user.password = userInfo.password;
+    user.save(callback);
+  });
+};
+
+//更新关注数
+exports.updateFollowingCount = function (id, callback) {
+  if (!id) {
+    return callback();
+  }
+  User.findOne({_id: id}, function (err, user) {
+    if(!user){
+      return err;
+    }
+    user.following_count = + 1;
+    user.save(callback);
+  });
+};
+
+//更新被关注数
+exports.updateFollowedCount = function (id, callback) {
+  if (!id) {
+    return callback();
+  }
+  User.findOne({_id: id}, function (err, user) {
+    if(!user){
+      return err;
+    }
+    user.followed_count = + 1;
+    user.save(callback);
+  });
+};
+
 exports.newAndSave = function (userInfo, callback) {
   const user         = new User();
   user.nickName      = userInfo.nickName;

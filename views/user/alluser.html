@@ -1,23 +1,33 @@
 <%- partial('../includes/global-nav') %>
 
 <main class="page all-user-page">
-  <div class="search-input">
-    <input type="search" placeholder="请输入用户名或昵称 / 搜索用户">
+  <form class="search-input" id="search" action="/alluser" method="post">
+    <input type="search" name="searchAllUser" placeholder="请输入用户名 / 搜索用户">
     <i class="search icon"></i>
-  </div>
+  </form>
+  <% if((typeof(resultUser) !== 'undefined' && resultUser)) { %>
   <div class="search-result">
     <div class="item">
       <div class="face">
-        <img src="https://sfault-avatar.b0.upaiyun.com/365/521/3655215859-572184c6803e9_huge256">
+        <a href="/user/<%= resultUser.loginName %>">
+          <img src="https://sfault-avatar.b0.upaiyun.com/365/521/3655215859-572184c6803e9_huge256">
+        </a>
       </div>
       <div class="info">
-        <div class="name">Youthink</div>
+        <div class="name"><%= resultUser.nickName %></div>
         <div class="follow">
-          <button class="mini-btn ui primary button">关注</button>
+          <a class="mini-btn ui primary button" href="user/<%= resultUser.loginName %>">查看</a>
         </div>
       </div>
     </div>
   </div>
+  <% } %>
+  <% if (typeof(error) !== 'undefined' && error) { %>
+  <div class="ui warning message">
+    <a class="close" data-dismiss="alert" href="#">&times;</a>
+    <strong><%= error %></strong>
+  </div>
+  <% } %>
   <!--<div class="user-list">-->
     <!--<div class="new-user-rank">-->
       <!--<div class="rank-title">-->
@@ -60,3 +70,21 @@
   </div>
 </main>
 
+<script>
+  $('#search').submit(function(){
+    const searchAllUser= $("[name='searchAllUser']").val();
+    if($.trim(searchAllUser)==""){
+      alert("关键词不能为空");
+      return false;
+    }
+  });
+
+  $('.message .close')
+    .on('click', function() {
+      $(this)
+        .closest('.message')
+        .transition('fade')
+      ;
+    })
+  ;
+</script>
