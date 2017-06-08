@@ -100,9 +100,7 @@ exports.signup = function (req, res, next) {
           }
         });
 
-        res.render('sign/signup', {
-          success: '欢迎加入'
-        });
+        return res.redirect('/signin');
       });
 
       }));

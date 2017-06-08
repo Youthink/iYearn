@@ -109,6 +109,18 @@ exports.getUserByNameAndKey = function (loginName, key, callback) {
   User.findOne({loginName: loginName, retrieve_key: key}, callback);
 };
 
+
+//更新用户头像
+exports.updateAvatar = function (userId, avator, callback) {
+  User.findOne({_id: userId}, function (err, user) {
+    if(!user){
+      return err;
+    }
+    user.avatarUrl = avator;
+    user.save(callback);
+  });
+};
+
 exports.newAndSave = function (userInfo, callback) {
   const user         = new User();
   user.nickName      = userInfo.nickName;
@@ -118,7 +130,7 @@ exports.newAndSave = function (userInfo, callback) {
   user.city          = userInfo.city;
   user.province      = userInfo.province;
   user.gender        = userInfo.gender;
-  user.avatarUrl     = userInfo.avatarUrl;
+  user.avatarUrl     = userInfo.avatarUrl || 'public/images/avatar/default.jpeg';
   user.wechatOpenId  = userInfo.wechatOpenId;
   user.accessToken   = uuid.v4();
   user.signUpTime    = new Date();

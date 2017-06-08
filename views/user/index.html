@@ -3,26 +3,36 @@
 <main class="page user-page">
     <div class="left-box">
       <div class="face">
-        <img src="https://sfault-avatar.b0.upaiyun.com/365/521/3655215859-572184c6803e9_huge256">
+        <img src="<%= user.avatarUrl %>">
         <div class="name">
           <%= user.nickName %>
         </div>
       </div>
+      <div class="follow-box">
+        <div class="item">
+          <span class="font">关注者</span>
+          <span class="count">16人</span>
+        </div>
+        <div class="item">
+          <span class="font">关注了</span>
+          <span class="count">16人</span>
+        </div>
+      </div>
       <div class="side-left">
         <ul>
-          <li>我的每天</li>
-          <li>我的每周</li>
-          <li>我的每月</li>
-          <li>我的每年</li>
+          <li><a href="/every-day/past">我的每天</a></li>
+          <li><a href="/every-week/this">我的每周</a></li>
+          <li><a href="/every-month/this">我的每月</a></li>
+          <li><a href="/every-year/this">我的每年</a></li>
         </ul>
       </div>
     </div>
     <div class="right-box">
-      <div class="ui top attached tabular menu">
-        <a class="item active" data-tab="first">今日</a>
-        <a class="item" data-tab="second">以往</a>
+      <div class="ui pointing secondary menu">
+        <a class="item active" data-tab="today">今日</a>
+        <a class="item" data-tab="past">统计</a>
       </div>
-      <div class="ui bottom attached active tab segment today" data-tab="first">
+      <div class="ui bottom attached active tab segment today" data-tab="today">
         <!--<div class="item">
           <p class="item-title">今日作息</p>
           <div class="sign-in">
@@ -73,13 +83,13 @@
           <% }%>
         </div>
       </div>
-      <div class="ui bottom attached tab segment" data-tab="second">
+      <div class="ui bottom attached tab segment" data-tab="past">
         <div class="item">
           <div class="past-day" style="text-align: center; width:600px;">
-            <p>选择日期查看以往的每日计划和成就</p>
-            <form action="/every-day/search">
+            <p>根据日期查看以往的每日计划和成就</p>
+            <form action="/user/<%= user.loginName %>" id="search-everyday">
               <div class="ui input">
-                <input class="sleep-time" type="search" placeholder="20170607">
+                <input class="sleep-time" type="search" name="date" placeholder="20170607">
                 <button class="ui primary sign-in-btn button">搜索</button>
               </div>
             </form>
@@ -105,9 +115,13 @@
       </div>
     </div>
   </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
 <script>
   $('.menu .item')
-    .tab()
+    .tab({
+      history: true,
+      historyType: 'hash'
+    })
   ;
 
   $('#add-diary').submit(function(){
@@ -122,6 +136,14 @@
     const diarySummary = $("[name='diarySummary']").val();
     if($.trim(diarySummary)==""){
       alert("还没有填写内容哪！");
+      return false;
+    }
+  });
+
+  $('#search-everyday').submit(function(){
+    const date = $("[name='date']").val();
+    if(date.length !== 8){
+      alert("日期格式不正确");
       return false;
     }
   });

@@ -9,6 +9,7 @@ exports.index = function (req, res, next) {
   const userName = req.params.name;
   const editTodayPlan = req.query.editTodayPlan;
   const editTodaySummary = req.query.editTodaySummary;
+  const searchEveryDayByDate = req.query.date;
   User.getUserByLoginName(userName, function (err, user) {
     if (err) {
       return next(err);
@@ -31,6 +32,28 @@ exports.index = function (req, res, next) {
       let todaySummary = '';
       let showPlanTextarea = false;
       let showSummaryTextarea = false;
+
+      // if(searchEveryDayByDate){
+      //   EveryDay.getUserToday(user._id, searchEveryDayByDate, function(err, Today){
+      //     if(Today&&Today.diary){
+      //       todayPlan = Today.diary;
+      //     }
+      //     if(Today&&Today.diarySummary){
+      //       todaySummary = Today.diarySummary;
+      //     }
+      //     res.render('user/index', {
+      //       todayPlan,
+      //       todaySummary,
+      //       showSummaryTextarea,
+      //       showPlanTextarea,
+      //       user: user,
+      //       wakeUped,
+      //       pageTitle: util.format('@%s 的个人主页', user.name),
+      //     });
+      //   })
+      //
+      // }
+
       EveryDay.getUserToday(user._id, TodayDate, function(err, Today){
         if(Today&&Today.wakeUpTime){
           wakeUped = true;
@@ -75,12 +98,24 @@ exports.showSettings = function (req, res, next){
     if (err) {
       return next(err);
     }
-    if (req.query.save === 'success') {
-      user.success = '保存成功。';
-    }
-    user.error = null;
+    console.log(user);
     return res.render('user/settings', {user: user});
   });
+};
+
+//上传头像
+exports.settingAvatar = function (req, res, next){
+  const userId = req.session.user._id;
+  const avator = req.files[0].path;
+
+  User.updateAvatar(userId, avator.slice(6), function (err, user) {
+    if(err){
+      return next(err);
+    }
+
+    return res.redirect('/settings');
+  })
+
 };
 
 exports.sleep = function (req, res, next){

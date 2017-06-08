@@ -9,6 +9,18 @@ const config = require('config-lite');
 const pkg = require('./package');
 const auth = require('./middlewares/auth');
 const apiRouterV1 = require('./routes/api_router');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/images/avatar')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + Date.parse(new Date()));
+  }
+});
+const upload = multer({ storage: storage });
+const cpUpload = upload.any();
 
 // 设置模板目录
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +31,7 @@ app.locals._layoutFile = 'layout.html';
 // 设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cpUpload);
 
 //表单内容
 app.use(bodyParser.json({limit: '1mb'}));

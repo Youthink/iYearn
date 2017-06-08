@@ -15,6 +15,7 @@ router.post('/signup', sign.signup);       // 用户注册
 router.post('/signout', sign.signout);     // 用户登出
 
 router.get('/settings', auth.userRequired, user.showSettings); // 用户个人设置
+router.post('/settings/avatar', auth.userRequired, user.settingAvatar);//设置个人头像
 router.get('/user/:name', user.index);     // 用户个人主页
 router.post('/user/:name/sleep', user.sleep); // 晚上睡前签到
 router.post('/user/:name/wake-up', user.wakeUp); // 起床签到
