@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const errorPageMiddleware = require('./middlewares/error_page');
 const webRouters = require('./routes/web_router');
 const config = require('config-lite');
 const pkg = require('./package');
@@ -51,6 +52,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+app.use(errorPageMiddleware.errorPage);
 
 // custom middleware
 app.use(auth.authUser);

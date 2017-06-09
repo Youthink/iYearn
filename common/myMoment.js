@@ -22,6 +22,14 @@ exports.todayDate = function () {
   return y + "" + m + "" + d;
 };
 
+exports.monthDate = function () {
+  return y + "" + m;
+};
+
+exports.yearDate = function () {
+  return y;
+};
+
 exports.todayDateTime = function () {
   return h + ":" + mm + ":" + ss;
 };

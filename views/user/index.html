@@ -10,58 +10,53 @@
       </div>
       <div class="follow-box">
         <div class="item">
-          <span class="font">关注者</span>
-          <span class="count"><%= user.followed_count %>人</span>
+          <div class="font ">关注者</div>
+          <div class="count"><span class="followed-count"><%= user.followed_count %></span>人</div>
         </div>
         <div class="item">
-          <span class="font">关注了</span>
-          <span class="count"><%= user.following_count %>人</span>
+          <div class="font">关注了</div>
+          <div class="count"><span class="following-count"><%= user.following_count %></span>人</div>
         </div>
       </div>
       <% if(current_user.loginName != user.loginName){ %>
       <div class="follow">
-        <button type="submit"
-                class="add-friend mini-btn ui <%= isFollow ? 'default' : 'primary' %> button"
-                action="<%= isFollow ? '/unfollow' : '/follow' %>"
-        >
-          <%= isFollow ? '已关注':'关注' %>
-        </button>
+        <input class="add-friend mini-btn ui <%= isFollow ? '' : 'primary' %> button" type="submit" value="<%= isFollow ? '已关注':'关注' %>" action="<%= isFollow ? '/unfollow' : '/follow' %>">
       </div>
       <% } %>
       <div class="side-left">
         <ul>
-          <li><a href="/every-day/past">我的每天</a></li>
-          <li><a href="/every-week/this">我的每周</a></li>
-          <li><a href="/every-month/this">我的每月</a></li>
-          <li><a href="/every-year/this">我的每年</a></li>
+          <% if(current_user.loginName != user.loginName){ %>
+          <li><a class="active" href="/user/<%= user.loginName %>">他的每天</a></li>
+          <li><a href="/user/<%= user.loginName %>/every-month">他的每月</a></li>
+          <li><a href="/user/<%= user.loginName %>/every-year">他的每年</a></li>
+          <% }else{ %>
+          <li><a class="active" href="/user/<%= user.loginName %>">我的每天</a></li>
+          <li><a href="/user/<%= user.loginName %>/every-month">我的每月</a></li>
+          <li><a href="/user/<%= user.loginName %>/every-year">我的每年</a></li>
+          <% } %>
         </ul>
       </div>
     </div>
     <div class="right-box">
-      <div class="ui pointing secondary menu">
-        <a class="item active" data-tab="today">今日</a>
-        <a class="item" data-tab="past">统计</a>
-      </div>
       <div class="ui bottom attached active tab segment today" data-tab="today">
-        <!--<div class="item">
-          <p class="item-title">今日作息</p>
-          <div class="sign-in">
-            <p>填写昨晚的休息时间，为您统计作息</p>
-            <% if (current_user) { %>
-            <% if (!wakeUped) { %>
-            <form action="/user/<%= user.loginName %>/wake-up" method="post">
-              <div class="ui input">
-                <input class="sleep-time" type="time">
-                <button class="ui primary sign-in-btn button">早起签到</button>
-              </div>
-            </form>
-            <% } else{ %>
-            <button>已签到</button>
-            <% } %>
-            <% } %>
-          </div>
-          <img src="https://ws2.sinaimg.cn/large/006tNc79ly1fgao54lq26j30km049dfx.jpg">
-        </div>-->
+        <% if(current_user.loginName != user.loginName){ %>
+        <div class="item">
+          <p class="item-title">他的今日计划</p>
+          <% if(todayPlan){ %>
+          <pre><%= todayPlan %></pre>
+          <% } else{ %>
+          <p>他还没有添加今日计划哟～～～  关注他，及时了解他的动态</p>
+          <% }%>
+        </div>
+        <div class="item">
+          <p class="item-title">他的今日成就</p>
+          <% if(todaySummary){ %>
+          <pre><%= todaySummary %></pre>
+          <% } else{ %>
+          <p>他还没有添加今日成就哟～～～  关注他，及时了解他的动态</p>
+          <% }%>
+        </div>
+        <% }else{ %>
         <div class="item">
           <p class="item-title">今日计划</p>
           <% if(!showPlanTextarea){ %>
@@ -92,48 +87,11 @@
           </form>
           <% }%>
         </div>
-      </div>
-      <div class="ui bottom attached tab segment" data-tab="past">
-        <div class="item">
-          <div class="past-day" style="text-align: center; width:600px;">
-            <p>根据日期查看以往的每日计划和成就</p>
-            <form action="/user/<%= user.loginName %>" id="search-everyday">
-              <div class="ui input">
-                <input class="sleep-time" type="search" name="date" placeholder="20170607">
-                <button class="ui primary sign-in-btn button">搜索</button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="item">
-          <p class="item-title">当日计划</p>
-          <p>1、早上早起学习mongoDB</p>
-          <p>2、学习英语</p>
-          <p>3、下午提交代码</p>
-          <p>4、Github每日提交</p>
-          <p>5、每天的八杯水</p>
-          <p>6、锻炼身体</p>
-        </div>
-        <div class="item" style="margin-top:20px;">
-          <p class="item-title">当日成就</p>
-          <p>1、每天的八杯水 完成</p>
-          <p>2、Github每日提交 完成</p>
-          <p>3、学习mongoDB</p>
-          <p>4、学习JavaScript</p>
-          <p>5、学习React</p>
-        </div>
+        <% } %>
       </div>
     </div>
   </main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
 <script>
-  $('.menu .item')
-    .tab({
-      history: true,
-      historyType: 'hash'
-    })
-  ;
-
   $('#add-diary').submit(function(){
     const diary= $("[name='diary']").val();
     if($.trim(diary)==""){
@@ -160,6 +118,8 @@
 
   $('.add-friend')
     .on('click', function() {
+      $me = $(this);
+      const followedCount = Number($('.followed-count').text());
       const action = $(this).attr('action');
       $.ajax({
         method:'POST',
@@ -167,9 +127,24 @@
         data:{
           friendId: '<%= user._id %>'
         }
-      });
-      location.reload();
+      }).then(
+        (data)=>{
+          if(data.success){
+            if (action == '/follow') {
+              $me.val('已关注');
+              $me.attr('action', '/unfollow');
+              $('.followed-count').text(followedCount + 1);
+            } else {
+              $me.val('关注');
+              $me.attr('action', '/follow');
+              $('.followed-count').text(followedCount - 1);
+            }
+            $me.toggleClass('primary');
+          }
+        })
     })
   ;
 </script>
+
+
 

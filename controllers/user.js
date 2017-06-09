@@ -5,7 +5,7 @@ const Message     = require('../proxy').Message;
 const util         = require('util');
 const eventproxy   = require('eventproxy');
 const tools        = require('../common/tools');
-const { todayDate, todayDateTime}  = require('../common/myMoment');
+const { todayDate, todayDateTime, monthDate, yearDate}  = require('../common/myMoment');
 
 //用户主页
 exports.index = function (req, res, next) {
@@ -13,14 +13,13 @@ exports.index = function (req, res, next) {
   const userName = req.params.name;
   const editTodayPlan = req.query.editTodayPlan;
   const editTodaySummary = req.query.editTodaySummary;
-  const searchEveryDayByDate = req.query.date;
 
   User.getUserByLoginName(userName, function (err, user) {
     if (err) {
       return next(err);
     }
     if (!user) {
-      //res.render404('这个用户不存在。');
+      res.render404('啊偶～～这个用户不存在。');
       return;
     }
 
@@ -38,27 +37,6 @@ exports.index = function (req, res, next) {
       let showPlanTextarea = false;
       let showSummaryTextarea = false;
       let isFollow = false;
-
-      // if(searchEveryDayByDate){
-      //   EveryDay.getUserToday(user._id, searchEveryDayByDate, function(err, Today){
-      //     if(Today&&Today.diary){
-      //       todayPlan = Today.diary;
-      //     }
-      //     if(Today&&Today.diarySummary){
-      //       todaySummary = Today.diarySummary;
-      //     }
-      //     res.render('user/index', {
-      //       todayPlan,
-      //       todaySummary,
-      //       showSummaryTextarea,
-      //       showPlanTextarea,
-      //       user: user,
-      //       wakeUped,
-      //       pageTitle: util.format('@%s 的个人主页', user.name),
-      //     });
-      //   })
-      //
-      // }
 
       EveryDay.getUserToday(user._id, TodayDate, function(err, Today){
         if(Today&&Today.wakeUpTime){
@@ -105,8 +83,70 @@ exports.index = function (req, res, next) {
   });
 };
 
-//用户个人设置
+//用户的每月
+exports.everyMonth = function (req, res, next){
+  const userName = req.params.name;
+  const editMonthPlan = req.query.editMonthPlan;
+  const editMonthSummary = req.query.editMonthSummary;
 
+  User.getUserByLoginName(userName, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+
+    const MonthDate = monthDate();
+    let monthPlan = '';
+    let monthSummary = '';
+    let showPlanTextarea = false;
+    let showSummaryTextarea = false;
+    let isFollow = false;
+
+    EveryDay.getUserToday(user._id, MonthDate, function(err, Month){
+
+      if(Month&&Month.diary){
+        monthPlan = Month.diary;
+        showPlanTextarea = true;
+      }
+      if(editMonthPlan){
+        showPlanTextarea = false;
+      }
+
+      if(Month&&Month.diarySummary){
+        monthSummary = Month.diarySummary;
+        showSummaryTextarea = true;
+      }
+      if(editMonthSummary){
+        showSummaryTextarea = false;
+      }
+
+      Follows.getFollowsByUserId(req.session.user._id, function(err,follow){
+
+        if(follow.length !== 0){
+          isFollow = true;
+        }
+        console.log(isFollow);
+        res.render('user/every-month', {
+          monthPlan,
+          monthSummary,
+          isFollow,
+          showSummaryTextarea,
+          showPlanTextarea,
+          user: user,
+          pageTitle: util.format('@%s 的个人主页', user.name),
+        });
+      });
+    });
+  });
+};
+
+//用户的每年
+exports.everyYear = function (req, res, next){
+
+};
+
+
+
+//用户个人设置
 exports.showSettings = function (req, res, next){
   User.getUserById(req.session.user._id, function (err, user) {
     if (err) {
@@ -245,8 +285,8 @@ exports.follow = function (req, res, next){
         return next(err);
       }
     });
+    return res.send({success:true});
   });
-  return next();
 };
 
 exports.unfollow = function (req, res, next){
@@ -274,9 +314,9 @@ exports.unfollow = function (req, res, next){
       user.followed_count -= 1;
       user.save();
     });
-  });
 
-  return next();
+    return res.send({success:true});
+  });
 };
 
 exports.allUser = function (req, res, next){
@@ -289,12 +329,11 @@ exports.message = function (req, res, next){
     if(err){
       return next(err);
     }
-    res.render('messages',{messages:messages});
-
     Message.updateMessagesToRead(req.session.user._id,messages,function(err){
       if(err){
         return next(err);
       }
+      return res.render('messages',{messages:messages});
     });
   });
 };

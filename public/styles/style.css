@@ -63,6 +63,11 @@ body{
 .item-title{
   font-size: 18px;
 }
+
+.right-box .today{
+  min-height:500px;
+}
+
 .right-box .today .item{
   margin: 20px auto;
 }
@@ -95,6 +100,7 @@ body{
   float: left;
   margin-right: 60px;
   text-align: center;
+  margin-top: 32px;
 }
 
 .user-page .left-box .follow-box{
@@ -117,12 +123,6 @@ body{
   margin: 0 10px;
   text-align: center;
 }
-
-.user-page .left-box .follow-box .item span{
-  display: block;
-  margin-top: 10px;
-}
-
 .user-page .left-box .follow-box .item .font{
   font-size: 15px;
 }
@@ -130,6 +130,11 @@ body{
 .user-page .left-box .follow-box .item .count{
   font-size: 18px;
   color: #666666;
+  margin-top: 15px;
+}
+
+.user-page .left-box .follow-box .item .count span{
+  margin-right:5px;
 }
 
 .user-page .right-box{
@@ -227,4 +232,25 @@ body{
   width:80px;
   display: inline-block;
 }
+
+.ui.form textarea{
+  padding:0;
+}
+
+
+.side-left .active{
+  color:#555;
+}
+
+/*********错误提醒页********/
+.notify-page .message{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #FFFFFF;
+  min-height:600px;
+  color:#8590a6;
+  font-size: 20px;
+}
+
 

@@ -67,37 +67,9 @@ exports.addSummary = function (req, res, next) {
   });
 };
 
-exports.addWeekPlan = function (req, res, next) {
-  const diary = req.body.diary;
 
-  console.log(diary);
-};
 
-exports.addWeekSummary = function (req, res, next) {
-  const diary = req.body.diary;
-
-  console.log(diary);
-};
-
-exports.addMonthPlan = function (req, res, next) {
-  const diary = req.body.diary;
-
-  console.log(diary);
-};
-
-exports.addMonthSummary = function (req, res, next) {
-  const diary = req.body.diary;
-
-  console.log(diary);
-};
-
-exports.addYearPlan = function (req, res, next) {
-  const diary = req.body.diary;
-
-  console.log(diary);
-};
-
-exports.addYearSummary = function (req, res, next) {
+exports.showPost = function (req, res, next) {
   const diary = req.body.diary;
 
   console.log(diary);

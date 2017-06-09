@@ -19,8 +19,8 @@ router.post('/settings/avatar', auth.userRequired, user.settingAvatar);//设置�
 router.post('/settings/base', auth.userRequired, user.settingBase);//设置个人信息
 router.post('/settings', auth.userRequired, user.updatePwd);//更新密码
 router.get('/user/:name', user.index);     // 用户个人主页
-router.post('/user/:name/wake-up', user.wakeUp); // 起床签到
-
+router.get('/user/:name/every-month', user.everyMonth);     // 用户的每月
+router.get('/user/:name/every-year', user.everyYear);     // 用户的每年
 
 router.post('/alluser', user.search); // 搜索用户
 router.post('/follow', auth.userRequired, user.follow); // 关注好友
@@ -31,19 +31,9 @@ router.get('/message', auth.userRequired, user.message); // 我的消息
 router.post('/every-day/add-diary', everyDay.addDiary); // 添加今日计划
 router.post('/every-day/add-summary', everyDay.addSummary); // 添加今日成就
 
-router.post('/every-week/add-week-plan', everyDay.addWeekPlan); // 添加周计划
-router.post('/every-week/add-week-summary', everyDay.addWeekSummary); // 添加周成就
-
-router.post('/every-month/add-month-plan', everyDay.addMonthPlan); // 添加月计划
-router.post('/every-month/add-month-summary', everyDay.addMonthSummary); // 添加月成就
-
-router.post('/every-year/add-year-plan', everyDay.addWeekPlan); // 添加年计划
-router.post('/every-year/add-year-summary', everyDay.addYearSummary); // 添加年成就
+router.get('/every-day/post',everyDay.showPost);//以往的每日
 
 router.get('/alluser', user.allUser); // 成员页面
-
-router.get('/wake-up-rank', user.wakeUpRank); // 早起排名
-
 
 module.exports = router;
 
