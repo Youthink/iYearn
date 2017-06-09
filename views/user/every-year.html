@@ -1,0 +1,144 @@
+<%- partial('includes/global-nav') %>
+
+<main class="page user-page">
+    <div class="left-box">
+        <div class="face">
+            <img src="<%= user.avatarUrl %>">
+            <div class="name">
+                <%= user.nickName %>
+            </div>
+        </div>
+        <div class="follow-box">
+            <div class="item">
+                <div class="font ">关注者</div>
+                <div class="count"><span class="followed-count"><%= user.followed_count %></span>人</div>
+            </div>
+            <div class="item">
+                <div class="font">关注了</div>
+                <div class="count"><span class="following-count"><%= user.following_count %></span>人</div>
+            </div>
+        </div>
+        <% if(current_user.loginName != user.loginName){ %>
+        <div class="follow">
+            <input class="add-friend mini-btn ui <%= isFollow ? '' : 'primary' %> button" type="submit" value="<%= isFollow ? '已关注':'关注' %>" action="<%= isFollow ? '/unfollow' : '/follow' %>">
+        </div>
+        <% } %>
+        <div class="side-left">
+            <ul>
+                <% if(current_user.loginName != user.loginName){ %>
+                <li><a href="/user/<%= user.loginName %>">他的每天</a></li>
+                <li><a class="active" href="/user/<%= user.loginName %>/every-month">他的每月</a></li>
+                <li><a class="active" href="/user/<%= user.loginName %>/every-year">他的每年</a></li>
+                <% }else{ %>
+                <li><a href="/user/<%= user.loginName %>">我的每天</a></li>
+                <li><a href="/user/<%= user.loginName %>/every-month">我的每月</a></li>
+                <li><a class="active" href="/user/<%= user.loginName %>/every-year">我的每年</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <div class="right-box">
+        <div class="ui bottom attached active tab segment today" data-tab="today">
+            <% if(current_user.loginName != user.loginName){ %>
+            <div class="item">
+                <p class="item-title">他的今年计划</p>
+                <% if(yearPlan){ %>
+                <pre><%= yearPlan %></pre>
+                <% } else{ %>
+                <p>他还没有添加本月计划哟～～～  关注他，及时了解他的动态</p>
+                <% }%>
+            </div>
+            <div class="item">
+                <p class="item-title">他的今年成就</p>
+                <% if(yearSummary){ %>
+                <pre><%= yearSummary %></pre>
+                <% } else{ %>
+                <p>他还没有添加本月成就哟～～～  关注他，及时了解他的动态</p>
+                <% }%>
+            </div>
+            <% }else{ %>
+            <div class="item">
+                <p class="item-title">今年计划</p>
+                <% if(!showPlanTextarea){ %>
+                <form class="ui form" action="/every/add-plan" method="post" id="add-plan">
+                    <input type="hidden" name="dateType" value="year">
+                    <textarea name="plan"cols="80" rows="10"><%= yearPlan %></textarea>
+                    <button class="ui primary add-diary button">添加计划</button>
+                </form>
+                <% } else{ %>
+                <pre><%= yearPlan %></pre>
+                <form class="ui form" action="/user/<%= user.loginName %>/every-year">
+                    <input type="hidden" name="editYearPlan" value="true">
+                    <button class="ui primary add-diary button">编辑计划</button>
+                </form>
+                <% }%>
+            </div>
+            <div class="item">
+                <p class="item-title">今年成就</p>
+                <% if(!showSummaryTextarea){ %>
+                <form class="ui form" action="/every/add-summary" method="post" id="add-summary">
+                    <input type="hidden" name="dateType" value="year">
+                    <textarea name="diarySummary"cols="80" rows="10"><%= yearSummary %></textarea>
+                    <button class="ui primary add-diary-summary button">添加总结</button>
+                </form>
+                <% } else{ %>
+                <pre><%= yearSummary %></pre>
+                <form class="ui form" action="/user/<%= user.loginName %>/every-year">
+                    <input type="hidden" name="editTodaySummary" value="true">
+                    <button class="ui primary add-diary button">编辑总结</button>
+                </form>
+                <% }%>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</main>
+<script>
+  $('#add-plan').submit(function(){
+    const plan= $("[name='plan']").val();
+    if($.trim(plan)==""){
+      alert("还没有填写内容哪！");
+      return false;
+    }
+  });
+
+  $('#add-summary').submit(function(){
+    const diarySummary = $("[name='diarySummary']").val();
+    if($.trim(diarySummary)==""){
+      alert("还没有填写内容哪！");
+      return false;
+    }
+  });
+
+  $('.add-friend')
+    .on('click', function() {
+      $me = $(this);
+      const followedCount = Number($('.followed-count').text());
+      const action = $(this).attr('action');
+      $.ajax({
+        method:'POST',
+        url:action,
+        data:{
+          friendId: '<%= user._id %>'
+        }
+      }).then(
+        (data)=>{
+          if(data.success){
+            if (action == '/follow') {
+              $me.val('已关注');
+              $me.attr('action', '/unfollow');
+              $('.followed-count').text(followedCount + 1);
+            } else {
+              $me.val('关注');
+              $me.attr('action', '/follow');
+              $('.followed-count').text(followedCount - 1);
+            }
+            $me.toggleClass('primary');
+          }
+        })
+    })
+  ;
+</script>
+
+
+

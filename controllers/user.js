@@ -1,5 +1,5 @@
 const User         = require('../proxy').User;
-const EveryDay     = require('../proxy').EveryDay;
+const Every     = require('../proxy').Every;
 const Follows     = require('../proxy').Follows;
 const Message     = require('../proxy').Message;
 const util         = require('util');
@@ -38,21 +38,18 @@ exports.index = function (req, res, next) {
       let showSummaryTextarea = false;
       let isFollow = false;
 
-      EveryDay.getUserToday(user._id, TodayDate, function(err, Today){
-        if(Today&&Today.wakeUpTime){
-          wakeUped = true;
-        }
+      Every.getUserEvery(user._id, TodayDate, function(err, Today){
 
-        if(Today&&Today.diary){
-          todayPlan = Today.diary;
+        if(Today&&Today.plan){
+          todayPlan = Today.plan;
           showPlanTextarea = true;
         }
         if(editTodayPlan){
           showPlanTextarea = false;
         }
 
-        if(Today&&Today.diarySummary){
-          todaySummary = Today.diarySummary;
+        if(Today&&Today.summary){
+          todaySummary = Today.summary;
           showSummaryTextarea = true;
         }
         if(editTodaySummary){
@@ -101,18 +98,18 @@ exports.everyMonth = function (req, res, next){
     let showSummaryTextarea = false;
     let isFollow = false;
 
-    EveryDay.getUserToday(user._id, MonthDate, function(err, Month){
+    Every.getUserEvery(user._id, MonthDate, function(err, Month){
 
-      if(Month&&Month.diary){
-        monthPlan = Month.diary;
+      if(Month&&Month.plan){
+        monthPlan = Month.plan;
         showPlanTextarea = true;
       }
       if(editMonthPlan){
         showPlanTextarea = false;
       }
 
-      if(Month&&Month.diarySummary){
-        monthSummary = Month.diarySummary;
+      if(Month&&Month.summary){
+        monthSummary = Month.summary;
         showSummaryTextarea = true;
       }
       if(editMonthSummary){
@@ -141,7 +138,58 @@ exports.everyMonth = function (req, res, next){
 
 //用户的每年
 exports.everyYear = function (req, res, next){
+  const userName = req.params.name;
+  const editYearPlan = req.query.editYearPlan;
+  const editYearSummary = req.query.editYearSummary;
 
+  User.getUserByLoginName(userName, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+
+    const YearDate = yearDate();
+    let yearPlan = '';
+    let yearSummary = '';
+    let showPlanTextarea = false;
+    let showSummaryTextarea = false;
+    let isFollow = false;
+
+    Every.getUserEvery(user._id, YearDate, function(err, Year){
+
+      if(Year&&Year.plan){
+        yearPlan = Year.plan;
+        showPlanTextarea = true;
+      }
+      if(editYearPlan){
+        showPlanTextarea = false;
+      }
+
+      if(Year&&Year.summary){
+        yearSummary = Year.summary;
+        showSummaryTextarea = true;
+      }
+      if(editYearSummary){
+        showSummaryTextarea = false;
+      }
+
+      Follows.getFollowsByUserId(req.session.user._id, function(err,follow){
+
+        if(follow.length !== 0){
+          isFollow = true;
+        }
+        console.log(isFollow);
+        res.render('user/every-year', {
+          yearPlan,
+          yearSummary,
+          isFollow,
+          showSummaryTextarea,
+          showPlanTextarea,
+          user: user,
+          pageTitle: util.format('@%s 的个人主页', user.name),
+        });
+      });
+    });
+  });
 };
 
 
@@ -237,27 +285,6 @@ exports.search = function (req, res, next){
   });
 };
 
-exports.wakeUp = function (req, res, next){
-  const currentUser = req.session.user.name;
-  const TodayDate = todayDate();
-  const wakeUpTime = todayDateTime();
-
-  EveryDay.newAndSave(currentUser, TodayDate, wakeUpTime, function (err) {
-    if (err) {
-      return next(err);
-    }
-  });
-
-  res.redirect('/wake-up-rank');
-};
-
-exports.wakeUpRank = function (req, res) {
-  const TodayDate = todayDate();
-  EveryDay.getRankByTodayDate(TodayDate, function(err,rank){
-    res.render('wake-up-rank', {rank});
-  });
-};
-
 exports.follow = function (req, res, next){
   const currentUser = req.session.user;
   const userId = currentUser._id;
@@ -319,7 +346,7 @@ exports.unfollow = function (req, res, next){
   });
 };
 
-exports.allUser = function (req, res, next){
+exports.allUser = function (req, res){
     const user = req.session.user || null;
     return res.render('user/alluser', {user: user});
 };

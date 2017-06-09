@@ -60,8 +60,9 @@
         <div class="item">
           <p class="item-title">今日计划</p>
           <% if(!showPlanTextarea){ %>
-          <form class="ui form" action="/every-day/add-diary" method="post" id="add-diary">
-            <textarea name="diary"cols="80" rows="10"><%= todayPlan %></textarea>
+          <form class="ui form" action="/every/add-plan" method="post" id="add-plan">
+            <input type="hidden" name="dateType" value="day">
+            <textarea name="plan"cols="80" rows="10"><%= todayPlan %></textarea>
             <button class="ui primary add-diary button">添加计划</button>
           </form>
           <% } else{ %>
@@ -75,7 +76,8 @@
         <div class="item">
           <p class="item-title">今日成就</p>
           <% if(!showSummaryTextarea){ %>
-          <form class="ui form" action="/every-day/add-summary" method="post" id="add-summary">
+          <form class="ui form" action="/every/add-summary" method="post" id="add-summary">
+            <input type="hidden" name="dateType" value="day">
             <textarea name="diarySummary"cols="80" rows="10"><%= todaySummary %></textarea>
             <button class="ui primary add-diary-summary button">添加总结</button>
           </form>
@@ -92,9 +94,9 @@
     </div>
   </main>
 <script>
-  $('#add-diary').submit(function(){
-    const diary= $("[name='diary']").val();
-    if($.trim(diary)==""){
+  $('#add-plan').submit(function(){
+    const plan= $("[name='plan']").val();
+    if($.trim(plan)==""){
       alert("还没有填写内容哪！");
       return false;
     }

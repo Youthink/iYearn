@@ -14,12 +14,12 @@ mongoose.connect(config.mongodb, {
 // models
 require('./user');
 require('./invitationCode');
-require('./everyDay');
+require('./every');
 require('./follows');
 require('./message');
 
 exports.User    = mongoose.model('User');
 exports.InvitationCode = mongoose.model('InvitationCode');
-exports.EveryDay = mongoose.model('EveryDay');
+exports.Every = mongoose.model('Every');
 exports.Follows = mongoose.model('Follows');
 exports.Message = mongoose.model('Message');

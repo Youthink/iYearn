@@ -3,22 +3,22 @@ const BaseModel = require("./base_model");
 const Schema    = mongoose.Schema;
 const ObjectId  = Schema.ObjectId;
 
-const EveryDaySchema = new Schema({
+const EverySchema = new Schema({
   userId        : { type: ObjectId },
-  TodayDate     : { type: String },
+  Date          : { type: String },
   wakeUpTime    : { type: String },
   sleepTime     : { type: String },
-  diary         : { type: String },
-  diarySummary  : { type: String }
+  plan          : { type: String },
+  summary       : { type: String }
 });
 
-EveryDaySchema.plugin(BaseModel);
+EverySchema.plugin(BaseModel);
 
-EveryDaySchema.pre('save', function(next){
+EverySchema.pre('save', function(next){
   const now = new Date();
   this.update_at = now;
   next();
 });
 
-mongoose.model('EveryDay', EveryDaySchema);
+mongoose.model('Every', EverySchema);
 

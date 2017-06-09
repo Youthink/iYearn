@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const sign = require('../controllers/sign');
 const user = require('../controllers/user');
-const everyDay = require('../controllers/everyDay');
+const every = require('../controllers/every');
 const auth = require('../middlewares/auth');
 
 
@@ -28,10 +28,10 @@ router.post('/unfollow', auth.userRequired, user.unfollow); // 取消关注
 
 router.get('/message', auth.userRequired, user.message); // 我的消息
 
-router.post('/every-day/add-diary', everyDay.addDiary); // 添加今日计划
-router.post('/every-day/add-summary', everyDay.addSummary); // 添加今日成就
+router.post('/every/add-plan', every.addPlan); // 添加今日计划
+router.post('/every/add-summary', every.addSummary); // 添加今日成就
 
-router.get('/every-day/post',everyDay.showPost);//以往的每日
+router.get('/every-day/post',every.showPost);//以往的每日
 
 router.get('/alluser', user.allUser); // 成员页面
 

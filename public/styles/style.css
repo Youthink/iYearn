@@ -234,9 +234,8 @@ body{
 }
 
 .ui.form textarea{
-  padding:0;
+  padding: 10px 0 10px 8px;
 }
-
 
 .side-left .active{
   color:#555;
