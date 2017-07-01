@@ -5,7 +5,7 @@ module.exports = {
   auth_cookie_name: 'iYearn',
   admins: { user_login_name: true },
 
-  port: 3001,
+  port: 3000,
   session: {
     secret: 'iYearn',
     key: 'iYearn',
