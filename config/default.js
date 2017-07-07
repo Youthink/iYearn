@@ -11,5 +11,5 @@ module.exports = {
     key: 'iYearn',
     maxAge: 2592000000
   },
-  mongodb: 'mongodb://localhost:27017/iYearn'
+  mongodb: 'mongodb://db:27017/iYearn'
 };
