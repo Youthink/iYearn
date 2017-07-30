@@ -5,11 +5,11 @@ module.exports = {
   auth_cookie_name: 'iYearn',
   admins: { user_login_name: true },
 
-  port: 3001,
+  port: 3000,
   session: {
     secret: 'iYearn',
     key: 'iYearn',
     maxAge: 2592000000
   },
-  mongodb: 'mongodb://king:IYearn_2017%40Hufy@db/iYearn'
+  mongodb: 'mongodb://king:IYearn_2017%40Hufy@db:27017/iYearn'
 };
