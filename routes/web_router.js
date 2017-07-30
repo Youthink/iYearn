@@ -7,6 +7,9 @@ const user = require('../controllers/user');
 const every = require('../controllers/every');
 const auth = require('../middlewares/auth');
 
+router.get('/', function(req, res) {
+   res.redirect('/signin');
+});
 
 router.get('/signin', sign.showLogin);     // 进入登录页
 router.post('/signin', sign.login);        // 登录验效
