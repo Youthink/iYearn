@@ -1,5 +1,7 @@
 const User         = require('../proxy').User;
 const Every        = require('../proxy').Every;
+const Follows        = require('../proxy').Follows;
+const Message        = require('../proxy').Message;
 const util         = require('util');
 const { todayDate, monthDate, yearDate}  = require('../common/myMoment');
 
@@ -26,6 +28,12 @@ exports.addPlan = function (req, res, next) {
     year  : '/user/'+ userName + '/every-year'
   }[dataType];
 
+  let text = {
+    day   : '今日',
+    month : '本月',
+    year  : '今年'
+  }[dataType];
+
   const e ={
     userId: userId,
     Date: date,
@@ -38,9 +46,19 @@ exports.addPlan = function (req, res, next) {
         if (err) {
           return next(err);
         }
-        res.redirect(url);
+        Follows.getFollowsByFollowing(userId,function(err,following){
+          const content = userName + '创建了新的'+ text +'计划赶快去看看吧';
+          following.map((user)=>{
+            Message.sendMessage(user.userId,userName,content,function(err){
+              if(err){
+                return next(err);
+              }
+            });
+          });
+          return res.redirect(url);
+        });
       });
-      return next();
+      return ;
     }
     Every.updatePlan(e, (err) => {
       if (err) {
@@ -75,6 +93,12 @@ exports.addSummary = function (req, res, next) {
     year  : '/user/'+ userName + '/every-year'
   }[dataType];
 
+  let text = {
+    day   : '今日',
+    month : '本月',
+    year  : '今年'
+  }[dataType];
+
   const e ={
     userId: userId,
     Date: date,
@@ -87,9 +111,19 @@ exports.addSummary = function (req, res, next) {
         if (err) {
           return next(err);
         }
-        res.redirect(url);
+      Follows.getFollowsByFollowing(userId,function(err,following){
+        const content = userName + '创建了新的'+ text +'成就赶快去看看吧';
+        following.map((user)=>{
+          Message.sendMessage(user.userId,userName,content,function(err){
+            if(err){
+              return next(err);
+            }
+          });
+        });
+        return res.redirect(url);
       });
-      return next();
+      });
+      return ;
     }
     Every.updateSummary(e, (err) => {
       if (err) {
@@ -98,10 +132,4 @@ exports.addSummary = function (req, res, next) {
       return res.redirect(url);
     })
   });
-};
-
-exports.showPost = function (req, res, next) {
-  const diary = req.body.diary;
-
-  console.log(diary);
 };

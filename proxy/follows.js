@@ -9,6 +9,10 @@ exports.getFollowsByUserId = function (userId, callback) {
   Follows.find({userId: userId}, callback);
 };
 
+exports.getFollowsByFollowing = function (following, callback) {
+  Follows.find({following: following}, callback);
+};
+
 exports.remove = function (userId, friendId, callback) {
   Follows.remove({userId: userId, following: friendId}, callback);
 };

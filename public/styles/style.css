@@ -64,15 +64,12 @@ body{
   font-size: 18px;
 }
 
-.right-box .today{
-  min-height:500px;
-}
-
 .right-box .today .item{
   margin: 20px auto;
 }
 .right-box .segment{
   min-width: 700px;
+  min-height:500px;
 }
 .item .sign-in .sign-in-btn{
   margin-left: 20px;
@@ -250,6 +247,23 @@ body{
   min-height:600px;
   color:#8590a6;
   font-size: 20px;
+}
+
+/******消息页******/
+.message-page{
+  width:700px;
+  margin:0 auto;
+}
+.message-page .title{
+  margin-top:55px;
+  font-size:18px;
+  color:#555;
+  margin-bottom:20px;
+}
+.message-page .messages a{
+  display: block;
+  margin:15px 15px 15px 0;
+  font-szie:14px;
 }
 
 

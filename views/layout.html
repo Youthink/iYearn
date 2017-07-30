@@ -12,4 +12,9 @@
 <body>
 <%- body %>
 </body>
+<script>
+    if(location.pathname.slice(1) === 'message'){
+      $('.notice').css("display","none");
+    }
+</script>
 </html>

@@ -13,7 +13,7 @@
             成员
         </a>
         <div class="right menu">
-            <% if (current_user.messages_count) { %>
+            <% if (current_user && current_user.messages_count) { %>
             <a class="read-message item" href="/message">
                 消息
                 <span class="notice"><%= current_user.messages_count %></span>

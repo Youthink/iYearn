@@ -1,0 +1,96 @@
+<%- partial('includes/global-nav') %>
+
+<main class="page user-page">
+    <div class="left-box">
+        <div class="face">
+            <img src="<%= user.avatarUrl %>">
+            <div class="name">
+                <%= user.nickName %>
+            </div>
+        </div>
+        <div class="follow-box">
+            <div class="item">
+                <div class="font ">关注者</div>
+                <div class="count"><span class="followed-count"><%= user.followed_count %></span>人</div>
+            </div>
+            <div class="item">
+                <div class="font">关注了</div>
+                <div class="count"><span class="following-count"><%= user.following_count %></span>人</div>
+            </div>
+        </div>
+        <% if(current_user.loginName != user.loginName){ %>
+        <div class="follow">
+            <input class="add-friend mini-btn ui <%= isFollow ? '' : 'primary' %> button" type="submit" value="<%= isFollow ? '已关注':'关注' %>" action="<%= isFollow ? '/unfollow' : '/follow' %>">
+        </div>
+        <% } %>
+        <div class="side-left">
+            <ul>
+                <% if(current_user.loginName != user.loginName){ %>
+                <li><a href="/user/<%= user.loginName %>">他的每天</a></li>
+                <li><a href="/user/<%= user.loginName %>/every-month">他的每月</a></li>
+                <li><a class="active" href="/user/<%= user.loginName %>/every-year">他的每年</a></li>
+                <li><a class="active" href="/user/<%= user.loginName %>/search-past">他的以往</a></li>
+                <% }else{ %>
+                <li><a href="/user/<%= user.loginName %>">我的每天</a></li>
+                <li><a href="/user/<%= user.loginName %>/every-month">我的每月</a></li>
+                <li><a href="/user/<%= user.loginName %>/every-year">我的每年</a></li>
+                <li><a class="active" href="/user/<%= user.loginName %>/search-past">我的以往</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <div class="right-box">
+        <div class="ui bottom attached segment">
+            <div class="item">
+                <p class="item-title">我关注的人</p>
+                <% followingArray.forEach(function(user){ %>
+                    <div class="item">
+                        <%= user.nickName %>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="item">
+                <p class="item-title">关注我的人</p>
+                <% followedArray.forEach(function(user){ %>
+                <div class="item">
+                    <%= user.nickName %>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+
+  $('.add-friend')
+    .on('click', function() {
+      $me = $(this);
+      const followedCount = Number($('.followed-count').text());
+      const action = $(this).attr('action');
+      $.ajax({
+        method:'POST',
+        url:action,
+        data:{
+          friendId: '<%= user._id %>'
+        }
+      }).then(
+        (data)=>{
+          if(data.success){
+            if (action == '/follow') {
+              $me.val('已关注');
+              $me.attr('action', '/unfollow');
+              $('.followed-count').text(followedCount + 1);
+            } else {
+              $me.val('关注');
+              $me.attr('action', '/follow');
+              $('.followed-count').text(followedCount - 1);
+            }
+            $me.toggleClass('primary');
+          }
+        })
+    })
+  ;
+</script>
+
+
+

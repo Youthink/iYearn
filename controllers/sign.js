@@ -21,7 +21,7 @@ exports.signup = function (req, res, next) {
   const email          = validator.trim(req.body.email).toLowerCase();
   const password       = validator.trim(req.body.password);
   const rePassword     = validator.trim(req.body.re_password);
-  const invitationCode = validator.trim(req.body.invitation_code);
+  // const invitationCode = validator.trim(req.body.invitation_code);
 
   const ep = new eventproxy();
   ep.fail(next);
@@ -50,9 +50,9 @@ exports.signup = function (req, res, next) {
   if (password !== rePassword) {
     return ep.emit('prop_err', '两次密码输入不一致。');
   }
-  if (!invitationCode) {
-    return ep.emit('prop_err', '请填写邀请码。');
-  }
+  //  if (!invitationCode) {
+  //    return ep.emit('prop_err', '请填写邀请码。');
+  //  }
   // END 验证信息的正确性
 
 
@@ -71,16 +71,16 @@ exports.signup = function (req, res, next) {
       return;
     }
 
-    InvitationCode.hasInvitationCode(invitationCode, function(err, code){
-      if (err) {
-        return next(err);
-      }
-
-      if (!code) {
-        ep.emit('prop_err', '邀请码已被使用或不存在');
-         return;
-       }
-      
+    //    InvitationCode.hasInvitationCode(invitationCode, function(err, code){
+    //      if (err) {
+    //        return next(err);
+    //      }
+    //
+    //      if (!code) {
+    //        ep.emit('prop_err', '邀请码已被使用或不存在');
+    //         return;
+    //       }
+    //
       tools.bhash(password, ep.done(function (passhash) {
         const userObj = {
           nickName     : nickName,
@@ -94,20 +94,18 @@ exports.signup = function (req, res, next) {
           return next(err);
         }
 
-        InvitationCode.updateInvitationCodeToUsed(invitationCode, loginName, function(err){
-          if (err) {
-            return next(err);
-          }
-        });
-
+          //        InvitationCode.updateInvitationCodeToUsed(invitationCode, loginName, function(err){
+          //          if (err) {
+          //            return next(err);
+          //          }
+          //        });
+          //
         return res.redirect('/signin');
       });
 
       }));
 
-    })
-    
-    
+    //   })
   });
 };
 

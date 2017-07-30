@@ -121,7 +121,6 @@ exports.everyMonth = function (req, res, next){
         if(follow.length !== 0){
           isFollow = true;
         }
-        console.log(isFollow);
         res.render('user/every-month', {
           monthPlan,
           monthSummary,
@@ -177,7 +176,6 @@ exports.everyYear = function (req, res, next){
         if(follow.length !== 0){
           isFollow = true;
         }
-        console.log(isFollow);
         res.render('user/every-year', {
           yearPlan,
           yearSummary,
@@ -192,6 +190,93 @@ exports.everyYear = function (req, res, next){
   });
 };
 
+
+//用户的以往
+exports.searchPast = function (req, res, next){
+  const searchKeyByDate = req.query.date;
+  const userName = req.params.name;
+  let isFollow = false;
+  let result = null;
+
+  User.getUserByLoginName(userName, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    Follows.getFollowsByUserId(req.session.user._id, function(err,follow){
+      if(follow.length !== 0){
+        isFollow = true;
+      }
+      if(!searchKeyByDate){
+        return res.render('user/search-past', {
+          result,
+          isFollow,
+          user: user,
+          pageTitle: util.format('@%s 的个人主页', user.name),
+        });
+      }
+      Every.getUserEvery(user._id, searchKeyByDate, function(err, every){
+        if(every){
+          result = every;
+        }else{
+          result = '没有查询到相关内容';
+        }
+
+        res.render('user/search-past', {
+          result,
+          isFollow,
+          user: user,
+          pageTitle: util.format('@%s 的个人主页', user.name),
+        });
+      });
+    });
+  });
+};
+
+
+//用户的关注
+exports.myfollow = function (req, res, next){
+  const userName = req.params.name;
+  let isFollow = false;
+  let followingArray = '';
+  let followedArray = '';
+
+  const ep = new eventproxy();
+
+  User.getUserByLoginName(userName, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    Follows.getFollowsByUserId(req.session.user._id, function(err,f_ing){
+      if(f_ing.length !== 0){
+        isFollow = true;
+        User.getUsersByIds(f_ing,function(err,following){
+          followingArray = following;
+          ep.emit('get_following');
+        });
+      }
+
+    Follows.getFollowsByFollowing(req.session.user._id, function(err,f_ed){
+        if(f_ed.length !== 0){
+          isFollow = true;
+          User.getUsersByIds(f_ed,function(err,followed){
+            followedArray = followed;
+            ep.emit('get_followed');
+          });
+        }
+
+        ep.all('get_following','get_followed', function(){
+          return res.render('user/my-follow', {
+            followingArray,
+            followedArray,
+            isFollow,
+            user: user,
+            pageTitle: util.format('@%s 的个人主页', user.name),
+          });
+        });
+      });
+    });
+  });
+};
 
 
 //用户个人设置

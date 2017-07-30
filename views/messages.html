@@ -1,9 +1,14 @@
 <%- partial('includes/global-nav') %>
 
-<div class="ui container">
-  <% messages.forEach(function(message){ %>
+<div class="ui message-page">
+  <div class="title">
+    我的未读消息
+  </div>
+  <div class="messages">
+    <% messages.forEach(function(message){ %>
 
-  <a href="/user/<%= message.author_loginName %>"><%= message.content %></a>
+    <a href="/user/<%= message.author_loginName %>"><%= message.content %></a>
 
-  <% }) %>
+    <% }) %>
+  </div>
 </div>

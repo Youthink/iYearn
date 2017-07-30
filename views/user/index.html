@@ -29,10 +29,12 @@
           <li><a class="active" href="/user/<%= user.loginName %>">他的每天</a></li>
           <li><a href="/user/<%= user.loginName %>/every-month">他的每月</a></li>
           <li><a href="/user/<%= user.loginName %>/every-year">他的每年</a></li>
+          <li><a href="/user/<%= user.loginName %>/search-past">他的以往</a></li>
           <% }else{ %>
           <li><a class="active" href="/user/<%= user.loginName %>">我的每天</a></li>
           <li><a href="/user/<%= user.loginName %>/every-month">我的每月</a></li>
           <li><a href="/user/<%= user.loginName %>/every-year">我的每年</a></li>
+          <li><a href="/user/<%= user.loginName %>/search-past">我的以往</a></li>
           <% } %>
         </ul>
       </div>
