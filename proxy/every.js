@@ -23,7 +23,6 @@ exports.updatePlan = function (plan, callback) {
 
 //更新总结
 exports.updateSummary = function (summary, callback) {
-  console.log(summary);
   Every.findOne({userId: summary.userId, Date: summary.Date}, function(err, s){
     if (err || !s) {
       return callback(err);

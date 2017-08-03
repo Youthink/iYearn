@@ -117,7 +117,12 @@ exports.signup = function (req, res, next) {
  */
 
 exports.showLogin = function (req, res) {
+  if (req.session.user && req.session.user.loginName) {
+    const refer = '/user/' + req.session.user.loginName;
+    res.redirect(refer);
+  } else {
   res.render('sign/signin');
+  }
 };
 
 
@@ -157,6 +162,7 @@ exports.login = function (req, res, next) {
   });
 
   getUser(loginName, function (err, user) {
+    console.log(user);
     if (err) {
       return next(err);
     }
@@ -171,10 +177,10 @@ exports.login = function (req, res, next) {
       // store session cookie
       authMiddleWare.gen_session(user, res);
       //check at some page just jump to home page
-      let refer = req.session._loginReferer || '/user/' + loginName;
+      let refer = req.session._loginReferer || '/user/' + user.loginName;
       for (let i = 0, len = notJump.length; i !== len; ++i) {
         if (refer.indexOf(notJump[i]) >= 0) {
-          refer = '/user/' + loginName;
+          refer = '/user/' + user.loginName;
           break;
         }
       }

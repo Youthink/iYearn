@@ -61,7 +61,6 @@ exports.index = function (req, res, next) {
           if(follow.length !== 0){
             isFollow = true;
           }
-          console.log(isFollow);
           res.render('user/index', {
             todayPlan,
             todaySummary,
@@ -285,7 +284,6 @@ exports.showSettings = function (req, res, next){
     if (err) {
       return next(err);
     }
-    console.log(user);
     return res.render('user/settings', {user: user});
   });
 };
