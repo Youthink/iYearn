@@ -6,6 +6,7 @@ const sign = require('../controllers/sign');
 const user = require('../controllers/user');
 const every = require('../controllers/every');
 const auth = require('../middlewares/auth');
+const about = require('../controllers/about');
 
 router.get('/', function(req, res) {
    res.redirect('/signin');
@@ -37,9 +38,7 @@ router.post('/every/add-plan', every.addPlan); // 添加今日计划
 router.post('/every/add-summary', every.addSummary); // 添加今日成就
 
 router.get('/alluser', user.allUser); // 成员页面
+router.get('/about', about.about); // 关于页面
 
 module.exports = router;
-
-
-
 
