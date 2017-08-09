@@ -162,7 +162,6 @@ exports.login = function (req, res, next) {
   });
 
   getUser(loginName, function (err, user) {
-    console.log(user);
     if (err) {
       return next(err);
     }
