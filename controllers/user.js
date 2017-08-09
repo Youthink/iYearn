@@ -39,8 +39,8 @@ exports.index = function (req, res, next) {
       let isFollow = false;
 
       Every.getUserEvery(user._id, TodayDate, function(err, Today){
-        console.log('今天的日期'，TodayDate);
-        console.log('今天的日志'，Today);
+        console.log('今天的日期', TodayDate);
+        console.log('今天的日志', Today);
         if(Today&&Today.plan){
           todayPlan = Today.plan;
           showPlanTextarea = true;
