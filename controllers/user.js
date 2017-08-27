@@ -31,6 +31,7 @@ exports.index = function (req, res, next) {
         return user.url;
       })();
       const TodayDate = todayDate();
+      console.log("引入的时候，时间为", TodayDate);
       let wakeUped = false;
       let todayPlan = '';
       let todaySummary = '';
