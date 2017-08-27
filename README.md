@@ -107,3 +107,13 @@ tab 的问题
 ```
 127.0.0.1 db
 ```
+
+
+时间选择器的样式参考：
+
+小米 https://kknews.cc/zh-sg/digital/z6kj55g.html
+
+我想用的 http://www.jq22.com/jquery-info14880
+http://www.jq22.com/yanshi14880
+
+http://www.jq22.com/yanshi13593

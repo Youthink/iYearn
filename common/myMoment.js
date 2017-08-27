@@ -19,6 +19,7 @@ function addPreZero(value) {
 }
 
 exports.todayDate = function () {
+  console.log("common 文件，今天的时间：", y + "" + m + "" + d);
   return y + "" + m + "" + d;
 };
 
@@ -33,6 +34,5 @@ exports.yearDate = function () {
 exports.todayDateTime = function () {
   return h + ":" + mm + ":" + ss;
 };
-
 
 
