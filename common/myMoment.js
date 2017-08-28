@@ -1,6 +1,8 @@
 
 const date     = new Date();
+console.log('common', date);
 const y        = date.getFullYear();
+console.log('common Year',y);
 const month    = date.getMonth() + 1;
 const day      = date.getDate();
 const hour     = date.getHours();
