@@ -31,7 +31,6 @@ exports.index = function (req, res, next) {
         return user.url;
       })();
       const TodayDate = todayDate();
-      console.log("引入的时候，时间为", TodayDate);
       let wakeUped = false;
       let todayPlan = '';
       let todaySummary = '';
@@ -41,8 +40,6 @@ exports.index = function (req, res, next) {
 
       Every.getUserEvery(user._id, TodayDate, function(err, Today){
         console.log('今天的日期', TodayDate);
-        console.log('今天的日志', Today);
-        console.log('打印日期：', new Date());
         if(Today&&Today.plan){
           todayPlan = Today.plan;
           showPlanTextarea = true;

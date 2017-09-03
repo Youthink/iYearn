@@ -12,6 +12,8 @@ const auth = require('./middlewares/auth');
 const apiRouterV1 = require('./routes/api_router');
 const multer = require('multer');
 
+process.env.TZ = 'Asia/Shanghai';
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/images/avatar')
